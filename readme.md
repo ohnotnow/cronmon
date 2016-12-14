@@ -127,6 +127,17 @@ php artisan cronmon:unsilence
 
 You can run the test suite by running `vendor/bin/phpunit`.  It should cover most of the functionality.
 
+## Why not use PackageX which does the same...
+
+There are quite a few SaaS which offer this kind of service.  But we needed
+something on-site as a large percentage of our servers aren't internet-facing,
+so a 'cloud' SaaS was fairly useless to us.
+
+Most of the on-site/opensource packages I could find were either in languages
+/ frameworks that I'm not hugely familiar with (certainly not to the extent I could confidently make needed modifications) or used a specific DB backend which we don't currently run.
+
+So I guess you could look on this as ideal if you're after an on-prem, relatively database-agnostic and can rustle up a server which can serve PHP.
+
 ### Todo :
 
 * Do something meaningful with the 'ping' logs for jobs.
