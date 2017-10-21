@@ -56,6 +56,20 @@ php artisan cronmon:createadmin username your-email@whatever.com
 ```
 You should be sent a password reset link by email which will let you set a password and log in.
 
+## Updating
+
+If you haved pulled down an updated version (by eg, `git pull origin master`) then you probably want to run :
+
+```
+composer update
+php artisan config:clear
+php artisan cache:clear
+php artisan view:clear
+vendor/bin/phpunit
+```
+
+That will clear out most of the cached/pre-compiled bits from the older copy and check things are still ok.
+
 ## Running the checks
 
 To manually run the checks for the jobs in the system you can call :
