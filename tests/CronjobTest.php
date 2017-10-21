@@ -1,4 +1,7 @@
 <?php
+// @codingStandardsIgnoreFile
+
+namespace Tests;
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -6,6 +9,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\JobHasGoneAwol;
 use App\Cronjob;
+use App\User;
+use App\Ping;
 use Carbon\Carbon;
 
 class CronjobTest extends TestCase
@@ -15,12 +20,14 @@ class CronjobTest extends TestCase
      * it doesn't call the $user->routeNotificationForMail() method :-/  If you want to see that
      * it's working, comment out the Notification::fake() line and set your MAIL_DRIVER in .env
      * to be 'log' then check near the end of storage/logs/laravel.log.
+     * The "fake" test is kept here in the hopes an update to the framework will resolve this...
+     * 
      * "Life, don't talk to me about life...."
      */
     public function test_a_job_with_comma_seperated_emails_goes_to_all_addresses()
     {
         Notification::fake();
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $job = $this->createAwolJob($user, ['email' => 'a@example.com, b@example.com']);
         $user->checkJobs();
         Notification::assertSentTo([$user], JobHasGoneAwol::class);
@@ -28,7 +35,7 @@ class CronjobTest extends TestCase
 
     public function test_it_can_create_a_valid_cronjob()
     {
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $job = $this->createRunningJob($user);
         $this->assertEquals($user->jobs()->count(), 1);
         $firstJob = $user->jobs()->first();
@@ -37,7 +44,7 @@ class CronjobTest extends TestCase
 
     public function test_it_knows_if_it_has_gone_awol()
     {
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $job = $this->createRunningJob($user);
 
         $result = $job->isAwol();
@@ -53,7 +60,7 @@ class CronjobTest extends TestCase
     {
         Notification::fake();
 
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $this->createRunningJob($user);
 
         $user->checkJobs();
@@ -65,7 +72,7 @@ class CronjobTest extends TestCase
     {
         Notification::fake();
 
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $job = $this->createAwolJob($user);
 
         $user->checkJobs();
@@ -83,7 +90,7 @@ class CronjobTest extends TestCase
     {
         Notification::fake();
 
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $this->createAwolJob($user, ['is_silenced' => true]);
 
         $user->checkJobs();
@@ -95,7 +102,7 @@ class CronjobTest extends TestCase
     {
         Notification::fake();
 
-        $user = factory(App\User::class)->create(['is_silenced' => true]);
+        $user = factory(User::class)->create(['is_silenced' => true]);
         $this->createAwolJob($user);
 
         $user->checkJobs();
@@ -107,7 +114,7 @@ class CronjobTest extends TestCase
     {
         Notification::fake();
 
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $this->createAwolJob($user);
 
         \Storage::put('cronmon.silenced', '');
@@ -117,10 +124,12 @@ class CronjobTest extends TestCase
         Notification::assertNotSentTo([$user], JobHasGoneAwol::class);
     }
 
-    public function test_pinging_a_job_creates_a_new_ping_record()
+    public function test_pinging_a_job_creates_a_new_ping_record_when_the_job_is_logging_runs()
     {
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $job = $this->createRunningJob($user);
+        $job->is_logging = true;
+        $job->save();
         $this->assertEquals(0, $job->pings()->count());
         $job->ping();
         $this->assertEquals(1, $job->pings()->count());
@@ -129,7 +138,7 @@ class CronjobTest extends TestCase
     public function test_checking_an_awol_job_twice_in_a_short_space_of_time_only_triggers_one_alert()
     {
         Notification::fake();
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $job = $this->createAwolJob($user);
 
         $user->checkJobs();
@@ -161,9 +170,9 @@ class CronjobTest extends TestCase
 
     public function test_pings_can_be_truncated()
     {
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $job = $this->createAwolJob($user);
-        $pings = factory(App\Ping::class, 200)->create(['cronjob_id' => $job->id]);
+        $pings = factory(Ping::class, 200)->create(['cronjob_id' => $job->id]);
         $lastPing = $job->pings()->latest('created_at')->first();
 
         // check the count matches
@@ -179,7 +188,7 @@ class CronjobTest extends TestCase
 
     public function test_pings_can_be_disabled()
     {
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $job = $this->createAwolJob($user);
         $this->assertEquals(0, $job->pings()->count());
         $job->is_logging = false;

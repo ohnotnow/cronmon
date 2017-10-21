@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Cronjob;
 
-class ApiTest extends TestCase
+class ApiTest extends Tests\BrowserKitTest
 {
     public function test_pinging_a_jobs_uri_updates_its_last_run_field()
     {

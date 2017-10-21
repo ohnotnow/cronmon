@@ -3,11 +3,13 @@
 namespace Tests;
 
 use Carbon\Carbon;
+use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
+abstract class BrowserKitTest extends BaseTestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
     use CreatesApplication;
 
     /**
@@ -27,6 +29,7 @@ abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
             'is_silenced' => false,
             'team_id' => null,
     ];
+
     public function createAwolJob($user, $data = [])
     {
         $data = array_merge($this->jobData, $data);

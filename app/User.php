@@ -2,15 +2,16 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Notifications\JobHasGoneAwol;
 use DB;
 use Log;
 use Storage;
 use Carbon\Carbon;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Notifications\JobHasGoneAwol;
+use Illuminate\Contracts\Auth\CanResetPassword;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPassword
 {
     use Notifiable;
 
@@ -136,11 +137,7 @@ class User extends Authenticatable
 
     public function createResetToken()
     {
-        $token = str_random(42);
-        DB::table('password_resets')->insert(
-            ['email' => $this->email, 'token' => $token, 'created_at' => Carbon::now()]
-        );
-        return $token;
+        return app('auth.password.broker')->createToken($this);
     }
 
     public function onTeam($team)

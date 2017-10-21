@@ -14,7 +14,7 @@
 use App\CronUuid;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(\App\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
@@ -26,7 +26,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Cronjob::class, function (Faker\Generator $faker) {
+$factory->define(\App\Cronjob::class, function (Faker\Generator $faker) {
 
     return [
         'email' => $faker->unique()->safeEmail,
@@ -35,7 +35,7 @@ $factory->define(App\Cronjob::class, function (Faker\Generator $faker) {
         'grace_units' => 'minute',
         'period' => 1,
         'period_units' => 'hour',
-        'user_id' => factory(App\User::class)->create()->id,
+        'user_id' => factory(\App\User::class)->create()->id,
         'email' => 'test@test.com',
         'last_run' => null,
         'is_silenced' => false,
@@ -43,14 +43,14 @@ $factory->define(App\Cronjob::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Team::class, function (Faker\Generator $faker) {
+$factory->define(\App\Team::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
     ];
 });
 
-$factory->define(App\Ping::class, function (Faker\Generator $faker) {
+$factory->define(\App\Ping::class, function (Faker\Generator $faker) {
     return [
-        'cronjob_id' => factory(App\Cronjob::class)->create()->id,
+        'cronjob_id' => factory(\App\Cronjob::class)->create()->id,
     ];
 });
