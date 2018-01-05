@@ -80,6 +80,9 @@
             </h3>
             <p class="subtitle">
                 {{ $job->getEmail() }}
+                @if ($job->fallback_email)
+                    <br>(fallback of {{ $job->fallback_email }})
+                @endif
             </p>
         </div>
         <div class="column">

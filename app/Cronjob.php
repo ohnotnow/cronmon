@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cronjob extends Model
 {
     protected $fillable = [
-        'name', 'period', 'period_units', 'grace', 'grace_units', 'email', 'is_silenced', 'user_id', 'uuid', 'team_id', 'notes', 'is_logging'
+        'name', 'period', 'period_units', 'grace', 'grace_units', 'email', 'is_silenced', 'user_id', 'uuid', 'team_id', 'notes', 'is_logging', 'fallback_email'
     ];
     protected $dates = ['last_run', 'last_alerted'];
 
@@ -193,6 +193,18 @@ class Cronjob extends Model
     {
         $this->last_alerted = Carbon::now();
         $this->save();
+    }
+
+    public function shouldNotifyFallbackAddress()
+    {
+        if (! $this->fallback_email) {
+            return false;
+        }
+        $triggerDate = $this->last_run->addHours(config('cronmon.fallback_delay', 24));
+        if ($triggerDate->gte(now())) {
+            return false;
+        }
+        return true;
     }
 
     public function uri()

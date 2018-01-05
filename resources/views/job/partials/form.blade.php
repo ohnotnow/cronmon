@@ -66,6 +66,10 @@
         <p class="control">
             <input class="input" type="text" name="email" value="{{ old('email', $job->email) }}" placeholder="{{ Auth::user()->email }}">
         </p>
+        <label>Fallback email address to alert (this is used after {{ config('cronmon.fallback_delay') }}hrs if the job is still alerting. Leave blank to ignore)</label>
+        <p class="control">
+            <input class="input" type="text" name="fallback_email" value="{{ old('fallback_email', $job->fallback_email) }}">
+        </p>
         <label>Team</label>
         <p class="control">
             <span class="select">

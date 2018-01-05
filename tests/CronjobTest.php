@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Notifications\AnonymousNotifiable;
 use App\Notifications\JobHasGoneAwol;
 use App\Cronjob;
 use App\User;
@@ -21,7 +22,7 @@ class CronjobTest extends TestCase
      * it's working, comment out the Notification::fake() line and set your MAIL_DRIVER in .env
      * to be 'log' then check near the end of storage/logs/laravel.log.
      * The "fake" test is kept here in the hopes an update to the framework will resolve this...
-     * 
+     *
      * "Life, don't talk to me about life...."
      */
     public function test_a_job_with_comma_seperated_emails_goes_to_all_addresses()
@@ -124,6 +125,49 @@ class CronjobTest extends TestCase
         Notification::assertNotSentTo([$user], JobHasGoneAwol::class);
     }
 
+    public function test_jobs_that_have_been_awol_for_ages_start_notifying_a_fallback_address()
+    {
+        Notification::fake();
+
+        $user = factory(User::class)->create();
+        $job = $this->createAwolJob($user);
+        $job->fallback_email = 'fallback@example.com';
+        $job->save();
+        // createAwolJob() uses 2hrs as it's error limit, so set the config to 1hr to use fallback
+        config(['cronmon.fallback_delay' => '1']);
+
+        $user->checkJobs();
+
+        Notification::assertSentTo(
+            new AnonymousNotifiable(),
+            JobHasGoneAwol::class,
+            function ($notification, $channels, $notifiable) use ($job) {
+                return $notifiable->routes['mail'] == 'fallback@example.com' && $notification->job->id === $job->id;
+            }
+        );
+    }
+
+    public function test_jobs_that_have_been_awol_for_a_short_time_dont_notify_a_fallback_address()
+    {
+        Notification::fake();
+
+        $user = factory(User::class)->create();
+        $job = $this->createAwolJob($user);
+        $job->fallback_email = 'fallback@example.com';
+        $job->save();
+        // createAwolJob() uses 2hrs as it's error limit, so set the config to 3hr which should skip fallback
+        config(['cronmon.fallback_delay' => '3']);
+
+        $user->checkJobs();
+
+        Notification::assertNotSentTo(
+            new AnonymousNotifiable(),
+            JobHasGoneAwol::class,
+            function ($notification, $channels, $notifiable) use ($job) {
+                return $notifiable->routes['mail'] == 'fallback@example.com';
+            }
+        );
+    }
     public function test_pinging_a_job_creates_a_new_ping_record_when_the_job_is_logging_runs()
     {
         $user = factory(User::class)->create();

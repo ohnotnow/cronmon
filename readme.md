@@ -18,7 +18,8 @@ if there's going to be a widespread maintenence period, for instance.  That way 
 just no alerts are sent.  Sysadmins can also view/edit any job or user on the system which can be useful
 if a job starts going 'alert crazy'.
 
-Users can also over-ride the email address for particular jobs.  So maybe a spcific backup job goes to person X, a particular facility/office jobs should go to a mailing list, etc.
+Users can also over-ride the email address for particular jobs.  So maybe a spcific backup job goes to person X, a particular facility/office jobs should go to a mailing list, etc. You can also have a 'fallback' email address which will start to get notified if a job has been alerting for a long while.
+
 
 Users can create teams and allocate jobs/users to the teams.  This allows other members of the
 team to view & edit any jobs which are in their team(s).
@@ -87,6 +88,8 @@ By default the alerts will only be sent to the user every 60 minutes.  That's so
 notifications every five minutes about a job that's failed to run.  If you want to alter that you can change the
 'alert_interval' value in config/cronmon.php.  You can also change the prefix of the email alert there too - by
 default it's '[CRONMON]'.
+
+In that config file you can also change the default number of hours a job can fail for before it is sent to any 'fallback' email address for the job.  This is useful when, for instance, the primary user should get notified right away, but the 'fallback' will start to get notified if they haven't dealt with things after some time.  The default is 24hrs.
 
 If you want to change things about the actual email that is sent, have a look at `app/Notifications/JobHasGoneAwol.php`.
 Also have a read of the the laravel [notification docs](https://laravel.com/docs/5.3/notifications).

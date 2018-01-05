@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\JobHasGoneAwol;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Support\Facades\Notification;
 
 class User extends Authenticatable implements CanResetPassword
 {
@@ -78,6 +79,10 @@ class User extends Authenticatable implements CanResetPassword
             if ($job->isAlerting() and $job->hasntAlertedRecently()) {
                 $this->jobemail = $job->getEmail();
                 $this->notify(new JobHasGoneAwol($job));
+                if ($job->shouldNotifyFallbackAddress()) {
+                    Notification::route('mail', $job->fallback_email)
+                        ->notify(new JobHasGoneAwol($job));
+                }
                 $job->updateLastAlerted();
             }
         }

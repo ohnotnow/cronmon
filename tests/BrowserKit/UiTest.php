@@ -4,6 +4,7 @@
 namespace Tests\BrowserKit;
 
 use App\User;
+use App\Cronjob;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -40,9 +41,13 @@ class UiTest extends \Tests\BrowserKitTest
             ->select('day', 'period_units')
             ->type('30', 'grace')
             ->select('minute', 'grace_units')
+            ->type('fallback@example.com', 'fallback_email')
             ->press('Create new job')
             ->see('Your jobs')
             ->see('TESTJOB');
+        $job = Cronjob::first();
+        $this->assertEquals('TESTJOB', $job->name);
+        $this->assertEquals('fallback@example.com', $job->fallback_email);
     }
 
     public function test_a_user_can_edit_an_existing_job()
