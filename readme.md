@@ -18,7 +18,7 @@ if there's going to be a widespread maintenence period, for instance.  That way 
 just no alerts are sent.  Sysadmins can also view/edit any job or user on the system which can be useful
 if a job starts going 'alert crazy'.
 
-Users can also over-ride the email address for particular jobs.  So maybe a spcific backup job goes to person X, a particular facility/office jobs should go to a mailing list, etc. You can also have a 'fallback' email address which will start to get notified if a job has been alerting for a long while.
+Users can also over-ride the email address for particular jobs.  So maybe a specific backup job goes to person X, a particular facility/office jobs should go to a mailing list, etc. You can also have a 'fallback' email address which will start to get notified if a job has been alerting for a long while.
 
 
 Users can create teams and allocate jobs/users to the teams.  This allows other members of the
