@@ -44,9 +44,9 @@ composer install
 ```
 If you don't have composer already then you can download it from https://getcomposer.org/ .
 
-You will also need to point a webserver vhost with ${your_directory}/public` as it's document root.
+You will also need to point a webserver vhost with `${your_directory}/public` as it's document root.
 
-Then edit the .env file to suit your environment.  Then run the database migrations to create the tables :
+Then edit the .env file to suit your environment (email server etc).  Then run the database migrations to create the tables :
 ```
 php artisan migrate
 ```
@@ -66,10 +66,10 @@ composer update
 php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
-vendor/bin/phpunit
+php artisan migrate
 ```
 
-That will clear out most of the cached/pre-compiled bits from the older copy and check things are still ok.
+That will clear out most of the cached/pre-compiled bits from the older copy and add any new fields to the database.
 
 ## Running the checks
 
