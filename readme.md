@@ -29,9 +29,22 @@ be used to record, for instance, an exit code or amount of data transferred.
 
 ## Requirements
 
-See the [Laravel requirements](https://laravel.com/docs/5.5/installation#server-requirements) page.  You also
+See the [Laravel requirements](https://laravel.com/docs/5.6/installation#server-requirements) page.  You also
 need a valid mail server to send the alerts.  You will probably need an SQL server - although you
 can use SQLite if you have a small install.
+
+## Docker demo
+
+If you have docker available you _should_ be able to run :
+
+```
+cp .env.docker .env
+docker-compose build
+docker-compose up
+docker-compose exec app php artisan cronmon:createadmin username email@whatever.com
+```
+
+Then the test app will be available at http://localhost:8002/ and all email is redirected to a copy of [Mailhog](https://github.com/mailhog/MailHog) running at http://localhost:18025/.
 
 ## Installation
 
