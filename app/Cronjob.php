@@ -181,7 +181,7 @@ class Cronjob extends Model
 
     public function hasntAlertedRecently()
     {
-        return ! $this->hasAlertedRecently();
+        return !$this->hasAlertedRecently();
     }
 
     public function minutesSinceLastAlert()
@@ -197,7 +197,7 @@ class Cronjob extends Model
 
     public function shouldNotifyFallbackAddress()
     {
-        if (! $this->fallback_email) {
+        if (!$this->fallback_email) {
             return false;
         }
         $triggerDate = $this->last_run->addHours(config('cronmon.fallback_delay', 24));
@@ -237,5 +237,23 @@ class Cronjob extends Model
     {
         $keepPings = $this->pings()->latest('created_at')->take($numberToKeep)->pluck('id')->toArray();
         $this->pings()->whereNotIn('id', $keepPings)->delete();
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'is_awol' => $this->isAwol(),
+            'show_url' => route('job.show', $this->id),
+            'user_url' => route('user.show', $this->user_id),
+            'username' => $this->user->username,
+            'teamname' => optional($this->team)->name ?? 'None',
+            'uri' => $this->uri(),
+            'is_silenced' => $this->is_silenced,
+            'name' => $this->name,
+            'schedule' => $this->getSchedule(),
+            'last_run' => $this->getLastRun(),
+            'last_run_diff' => $this->getLastRunDiff(),
+        ];
     }
 }

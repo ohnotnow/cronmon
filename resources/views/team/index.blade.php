@@ -1,29 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2 class="title is-2">
-        All teams
-    </h2>
-    <table class="table is-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>No. Members</th>
-                <th>No. Jobs</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($teams as $team)
-                <tr>
-                    <td>
-                        <a href="{{{ route('team.show', $team->id) }}}">
-                            {{ $team->name }}
-                        </a>
-                    </td>
-                    <td>{{ $team->members()->count() }}</td>
-                    <td>{{ $team->jobs()->count() }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="bg-white shadow p-8 mb-4">
+    <div class="text-orange-dark font-light mb-8 bg-orange-lightest -mx-8 -mt-8">
+        <h4 class="title text-orange-dark font-light text-2xl p-4 flex justify-between">
+            <span class="flex-1">All teams</span>
+        </h4>
+    </div>
+    <div class="flex p-4 border-b-2 border-orange">
+        <span class="font-semibold flex-1">
+            Name
+        </span>
+        <span class="font-semibold flex-1">
+            No. Members
+        </span>
+        <span class="font-semibold flex-1">
+            No. Jobs
+        </span>
+    </div>
+    @foreach ($teams as $team)
+        <div class="flex p-4">
+            <span class="flex-1">
+                <a class="text-orange" href="{{{ route('team.show', $team->id) }}}">
+                    {{ $team->name }}
+                </a>
+            </span>
+            <span class="flex-1">
+                {{ $team->members->count() }}
+            </span>
+            <span class="flex-1">
+                {{ $team->jobs->count() }}
+            </span>
+        </div>
+    @endforeach
+</div>
 @endsection

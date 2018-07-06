@@ -1,79 +1,80 @@
+<div class="mb-8">
         @if (Auth::user()->is_admin)
             @if ($job->user)
-                <label>Owner</label>
-                <p class="control">
-                    <span class="select">
-                        <select name="user_id">
+                <label class="title block">Owner</label>
+                    <span class="inline-block relative w-1/3">
+                        <select name="user_id" class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-4 py-2 pr-8 rounded shadow leading-tight">
                             @foreach ($users as $user)
                                 <option value="{{{ $user->id }}}" @if ($job->user_id == $user->id) selected @endif>
                                     {{{ $user->username }}}
                                 </option>
                             @endforeach
                         </select>
-                    </span>
-                </p>
+                  <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                                    </span>
             @endif
         @endif
-        <label>Friendly name</label>
+</div>
+<div class="mb-8">
+        <label class="title">Friendly name</label>
         <p class="control">
             <input class="input" type="text" name="name" value="{{ old('name', $job->name) }}" placeholder="Just an easy way to identify the job" required>
         </p>
-        <label>Runs Every</label>
-        <div class="columns">
-            <div class="column">
-            <p class="control">
+</div>
+<div class="mb-8">
+        <label class="title">Runs Every</label>
+        <div class="flex">
                 <input class="input" type="number" name="period" value="{{ old('period', $job->period) }}" min="1" required>
-            </p>
-            </div>
-            <div class="column">
-            <p class="control">
-                <span class="select">
-                    <select name="period_units">
+                <span class="inline-block relative w-64">
+                    <select name="period_units" class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-4 py-2 pr-8 rounded shadow leading-tight">
                         @foreach ($job->units as $uName => $uTitle)
                             <option value="{{ $uName }}" @if ($job->period_units == $uName) selected @endif>
                                 {{ $uTitle }}
                             </option>
                         @endforeach
                     </select>
+                                      <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
                 </span>
-            </p>
-            </div>
         </div>
-        <label>
+</div>
+<div class="mb-8">
+        <label class="title">
             Grace Period
         </label>
-        <div class="columns">
-            <div class="column">
-            <p class="control">
+            <div class="flex">
                 <input class="input" type="number" name="grace" value="{{ old('grace', $job->grace) }}" min="1" required>
-            </p>
-            </div>
-            <div class="column">
-            <p class="control">
-                <span class="select">
-                    <select name="grace_units">
+                <span class="inline-block relative w-64">
+                    <select name="grace_units" class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-4 py-2 pr-8 rounded shadow leading-tight">
                         @foreach ($job->units as $uName => $uTitle)
                             <option value="{{ $uName }}" @if ($job->grace_units == $uName) selected @endif>
                                 {{ $uTitle }}
                             </option>
                         @endforeach
                     </select>
+                                  <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
                 </span>
-            </p>
             </div>
-        </div>
-        <label>Email address to alert (Leave blank to use your own. You can use a comma-seperated list if you want)</label>
+</div>
+<div class="mb-8">
+        <label class="title">Email address to alert (Leave blank to use your own. You can use a comma-seperated list if you want)</label>
         <p class="control">
             <input class="input" type="text" name="email" value="{{ old('email', $job->email) }}" placeholder="{{ Auth::user()->email }}">
         </p>
-        <label>Fallback email address to alert (this is used after {{ config('cronmon.fallback_delay') }}hrs if the job is still alerting. Leave blank to ignore)</label>
-        <p class="control">
+</div>
+<div class="mb-8">
+        <label class="title">Fallback email address to alert (this is used after {{ config('cronmon.fallback_delay') }}hrs if the job is still alerting. Leave blank to ignore)</label>
             <input class="input" type="text" name="fallback_email" value="{{ old('fallback_email', $job->fallback_email) }}">
-        </p>
-        <label>Team</label>
-        <p class="control">
-            <span class="select">
-                <select name="team_id">
+</div>
+<div class="mb-8">
+        <label class="title block">Team</label>
+            <span class="inline-block relative w-1/3">
+                <select name="team_id" class="block appearance-none w-full bg-white border border-grey-light hover:border-grey px-4 py-2 pr-8 rounded shadow leading-tight">
                     <option value="-1">None</option>
                     @foreach (Auth::user()->teams as $team)
                         <option value="{{ $team->id }}" @if ($job->team_id == $team->id) selected @endif>
@@ -81,36 +82,34 @@
                         </option>
                     @endforeach
                 </select>
+                  <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
             </span>
-        </p>
-        <label>Notes</label>
-        <p class="control">
-            <textarea class="textarea" name="notes">{{ $job->notes }}</textarea>
-        </p>
-        <br />
-        <p class="control">
-            <label class="checkbox">
+</div>
+<div class="mb-8">
+        <label class="title">Notes</label>
+            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight" name="notes">{{ $job->notes }}</textarea>
+</div>
+<div class="mb-8">
+            <label class="title">
                 <input type="hidden" name="is_silenced" value="0">
                 <input type="checkbox" name="is_silenced" value="1" @if ($job->is_silenced) checked @endif>
                 Alarm Silenced
             </label>
-        </p>
         <br />
         <p class="control">
-            <label class="checkbox">
+            <label class="title">
                 <input type="hidden" name="is_logging" value="0">
                 <input type="checkbox" name="is_logging" value="1" @if ($job->is_logging) checked @endif>
                 Record Runs
             </label>
         </p>
         @if ($job->id)
-            <hr />
-            <p class="control">
-                <label class="checkbox">
+                <label class="title">
                     <input type="checkbox" name="regenerate_uuid" value="1">
                     Generate new UUID/URI?
                 </label>
-            </p>
         @endif
-
+</div>
         <hr />

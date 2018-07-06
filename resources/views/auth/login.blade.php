@@ -1,26 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="columns">
-        <div class="column"></div>
-        <div class="column">
+    <div class="flex items-center justify-center">
+        <div class="shadow p-8 bg-white w-1/2">
             <form method="POST" action="{{ url('/login') }}">
                 {{ csrf_field() }}
 
-                <label>Username or Email</label>
-                <p class="control">
-                    <input class="input" type="text" name="login" required autofocus>
-                </p>
-                <label>Password</label>
-                <p class="control">
-                    <input class="input" type="password" name="password" required>
-                </p>
-                <button class="button is-primary is-outlined">Log in</button>
-                <a class="button is-pulled-right" href="{{ url('/password/reset') }}">
-                    Forgot Your Password?
-                </a>
+                <div class="mb-2">
+                    <label class="label">Username or Email</label>
+                    <input class="shadow appearance-none border focus:border-grey-dark rounded w-full py-2 px-3 text-grey-darker leading-tight" type="text" name="login" required autofocus>
+                </div>
+                <div class="mb-8">
+                    <label class="label">Password</label>
+                    <input class="shadow appearance-none border focus:border-grey-dark rounded w-full py-2 px-3 text-grey-darker leading-tight" type="password" name="password" required>
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="bg-orange hover:bg-orange-dark focus:bg-orange-dark text-white font-bold py-2 px-4 rounded">Log in</button>
+                    <a class="text-orange-dark hover:text-orange-darker is-pulled-right" href="{{ url('/password/reset') }}">
+                        Forgot Your Password?
+                    </a>
+                </div>
             </form>
         </div>
-        <div class="column"></div>
     </div>
 @endsection

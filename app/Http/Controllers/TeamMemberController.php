@@ -20,10 +20,10 @@ class TeamMemberController extends Controller
     {
         $team = Team::findOrFail($id);
         $this->authorize('edit-team', $team);
-        if ($request->has('remove')) {
+        if ($request->filled('remove')) {
             $team->removeMembers($request->remove);
         }
-        if ($request->has('add')) {
+        if ($request->filled('add')) {
             $team->addMember($request->add);
         }
         return redirect()->route('team.show', $team->id);

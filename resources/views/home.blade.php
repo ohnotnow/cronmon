@@ -1,31 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="tabs">
-      <ul>
-        <li class="is-active" id="yourjobstab">
-            <a id="yourjobs"><h3 class="title is-3">
-                Your jobs
-            </h3></a>
-        </li>
-        <li id="teamjobstab">
-            <a id="teamjobs"><h3 class="title is-3">Team jobs</h3></a>
-        </li>
-       </ul>
-       <ul class="is-right">
-        <li>
-            <a class="button is-pulled-right" href="{{ route('job.create') }}">
-                Add new job
-            </a>
-        <li>
-      </ul>
+<div class="bg-white shadow p-8 mb-4">
+    <div class="text-orange-dark font-light mb-8 bg-orange-lightest -mx-8 -mt-8">
+        <h4 class="title text-orange-dark font-light text-2xl p-4 flex justify-between">
+            <span class="flex-1">Overview</span>
+            <span class="flex-1 text-right">
+                <a class="button text-base" href="{{ route('job.create') }}">Add job</a>
+            </span>
+        </h4>
     </div>
-    <div id="yourjobstable">
-        @include('job.partials.index')
-    </div>
-    @if (Auth::user()->getTeamJobs()->count() > 0)
-        <div id="teamjobstable" style="display:none">
-            @include('job.partials.index', ['jobs' => Auth::user()->getTeamJobs()])
-        </div>
-    @endif
+    <job-tabs
+      :userjobs='@json(Auth::user()->getAvailableJobs())'
+      :teamjobs='@json(Auth::user()->getTeamJobs())'
+    >
+    </job-tabs>
+</div>
 @endsection

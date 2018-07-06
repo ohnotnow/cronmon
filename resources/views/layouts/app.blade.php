@@ -11,52 +11,27 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
-    <link href="/css/fa/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/cronmon.css" rel="stylesheet">
 
     <link rel="shortcut icon" href="/favicon.ico">
     <!-- Scripts -->
     <script>
-        window.Laravel = <?php echo json_encode([
-            'csrfToken' => csrf_token(),
-        ]); ?>
+        window.Laravel = @json(['csrfToken' => csrf_token()])
     </script>
 </head>
-<body>
+<body class="bg-grey-lightest">
     <div id="app">
 
         @include('partials.navbar')
 
-            <div class="section">
-                <div class="container">
-                    @include('partials.errors')
-                    @yield('content')
-                </div>
-            </div>
+        <div class="container mx-auto pt-8 mb-16">
+                @include('partials.errors')
+                @yield('content')
         </div>
+
     </div>
 
-    <script src="/js/all.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.datatable').DataTable({
-                "paging":   false,
-                "ordering": false,
-                "info": false,
-            });
-            $('#yourjobs').click(function() {
-                $('#teamjobstab').removeClass('is-active')
-                $('#teamjobstable').hide();
-                $('#yourjobstab').addClass('is-active');
-                $('#yourjobstable').show();
-            });
-            $('#teamjobs').click(function() {
-                $('#yourjobstab').removeClass('is-active');
-                $('#yourjobstable').hide();
-                $('#teamjobstab').addClass('is-active')
-                $('#teamjobstable').show();
-            });
-        });
-    </script>
+    <script src="/js/app.js"></script>
 </body>
 </html>

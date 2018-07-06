@@ -1,33 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2 class="title is-2">
-        Job details
-        @if ($job->isAwol())
-            @if ($job->is_silenced)
-                <i class="fa fa-bell-o animated infinite tada" title="Awol - silenced"></i>
-            @else
-                <i class="fa fa-bell animated infinite tada" title="Awol - alerting"></i>
+<div class="bg-white shadow p-8">
+
+    <h2 class="text-orange-dark font-light flex justify-between mb-8 bg-orange-lightest -mx-8 -mt-8">
+        <span class="flex-1 p-4">
+            Job details
+            @if ($job->isAwol())
+                @if ($job->is_silenced)
+                    <i class="fa fa-bell-o animated infinite tada" title="Awol - silenced"></i>
+                @else
+                    <i class="fa fa-bell animated infinite tada" title="Awol - alerting"></i>
+                @endif
             @endif
-        @endif
-        <a class="button is-pulled-right" href="{{{ route('job.edit', $job->id) }}}">Edit job</a>
+        </span>
+        <span class="flex-1 p-4 text-right text-base">
+            <a class="hover:bg-orange hover:text-white focus:bg-orange border border-orange text-orange-dark font-bold py-2 px-4 rounded" href="{{{ route('job.edit', $job->id) }}}">Edit job</a>
+        </span>
     </h2>
-    <div class="columns">
-        <div class="column">
-            <h3 class="title is-3">
+    <div class="md:flex justify-between mb-4">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 Job name
             </h3>
             <p class="subtitle">
                 {{ $job->name }}
             </p>
         </div>
-        <div class="column">
-            <h3 class="title is-3">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 Owner
             </h3>
-            <p class="subtitle">
+            <p class="">
                 @if (Auth::user()->is_admin)
-                    <a href="{{{ route('user.show', $job->user->id) }}}">
+                    <a class="text-orange-dark" href="{{{ route('user.show', $job->user->id) }}}">
                         {{ $job->user->username }}
                     </a>
                 @else
@@ -35,8 +41,8 @@
                 @endif
             </p>
         </div>
-        <div class="column">
-            <h3 class="title is-3">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 Created
             </h3>
             <p class="subtitle">
@@ -44,25 +50,25 @@
             </p>
         </div>
     </div>
-    <div class="columns">
-        <div class="column">
-            <h3 class="title is-3">
+    <div class="md:flex justify-between mb-4">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 Last seen
             </h3>
             <p class="subtitle" title="{{ $job->last_run->format('d/m/Y H:i') }}">
                 {{ $job->last_run->diffForHumans() }}
             </p>
         </div>
-        <div class="column">
-            <h3 class="title is-3">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 Schedule
             </h3>
             <p class="subtitle">
                 {{ $job->getSchedule() }}
             </p>
         </div>
-        <div class="column">
-            <h3 class="title is-3">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 Grace
             </h3>
             <p class="subtitle">
@@ -70,9 +76,9 @@
             </p>
         </div>
     </div>
-    <div class="columns">
-        <div class="column">
-            <h3 class="title is-3">
+    <div class="md:flex justify-between mb-4">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 Alert goes to
                 @if ($job->is_silenced)
                     (silenced)
@@ -85,8 +91,8 @@
                 @endif
             </p>
         </div>
-        <div class="column">
-            <h3 class="title is-3">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 Team
             </h3>
             <p class="subtitle">
@@ -99,8 +105,8 @@
                 @endif
             </p>
         </div>
-        <div class="column">
-            <h3 class="title is-3">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 Notes
             </h3>
             <p class="subtitle">
@@ -108,9 +114,9 @@
             </p>
         </div>
     </div>
-    <div class="columns">
-        <div class="column">
-            <h3 class="title is-3">
+    <div class="md:flex justify-between mb-4">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 URI
             </h3>
             <p class="subtitle">{{ $job->uri() }}</p>
@@ -128,9 +134,9 @@
             </p>
         </div>
     </div>
-    <div class="columns">
-        <div class="column">
-            <h3 class="title is-3">
+    <div class="flex justify-between mb-4">
+        <div class="flex-1 p-4">
+            <h3 class="text-grey-dark text-xl font-light mb-2">
                 Run history
             </h3>
             <ul class="is-unstyled">
@@ -145,4 +151,5 @@
             </ul>
         </div>
     </div>
+</div>
 @endsection

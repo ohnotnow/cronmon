@@ -1,21 +1,22 @@
 {
   "private": true,
   "scripts": {
-    "prod": "gulp --production",
-    "dev": "gulp watch"
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
-    "bootstrap-sass": "^3.3.7",
-    "gulp": "^3.9.1",
-    "jquery": "^3.1.0",
-    "laravel-elixir": "^6.0.0-14",
-    "laravel-elixir-vue-2": "^0.2.0",
-    "laravel-elixir-webpack-official": "^1.0.2",
-    "lodash": "^4.16.2",
-    "vue": "^2.0.1",
-    "vue-resource": "^1.0.3"
+    "cross-env": "^5.1",
+    "glob-all": "^3.1.0",
+    "laravel-mix": "^2.0",
+    "tailwindcss": "^0.6.1",
+    "vue": "^2.5.16"
   },
   "dependencies": {
-    "bulma": "^0.2.3"
+    "laravel-mix-purgecss": "^2.2.0"
   }
 }

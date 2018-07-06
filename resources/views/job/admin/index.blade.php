@@ -1,49 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2 class="title is-2">
-        All Jobs
-    </h2>
-    <table class="table is-striped datatable">
-        <thead>
-            <tr>
-                <th>Status</th>
-                <th>Name</th>
-                <th>Schedule</th>
-                <th>Last Run</th>
-                <th>Owner</th>
-                <th>Group</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($jobs as $job)
-                <tr>
-                    <td>
-                        @include('job.partials.status')
-                    </td>
-                    <td>
-                        <a href="{{{ route('job.show', $job->id) }}}">
-                            {{ $job->name }}
-                        </a>
-                    </td>
-                    <td>{{ $job->getSchedule() }}</td>
-                    <td>{{ $job->getLastRunDiff() }}</td>
-                    <td>
-                        <a href="{{{ route('user.show', $job->user_id) }}}">
-                            {{ $job->user->username }}
-                        </a>
-                    </td>
-                    <td>
-                        @if ($job->team_id)
-                            <a href="{{{ route('team.show', $job->team_id) }}}">
-                                {{ $job->getTeamName() }}
-                            </a>
-                        @else
-                            {{ $job->getTeamName() }}
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="bg-white shadow p-8 mb-4">
+    <div class="text-orange-dark font-light mb-8 bg-orange-lightest -mx-8 -mt-8">
+        <h4 class="title text-orange-dark font-light text-2xl p-4 flex justify-between">
+            <span class="flex-1">All jobs</span>
+        </h4>
+    </div>
+    <job-list :jobs='@json($jobs)' :admin="true"></job-list>
+</div>
 @endsection
