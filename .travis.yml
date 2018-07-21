@@ -1,0 +1,16 @@
+os:
+  - linux
+
+language: php
+
+php:
+  - '7.1'
+  
+before_script:
+  - composer self-update
+  - composer install --no-interaction
+  - cp .env.travis .env
+  - phpenv rehash
+  
+script:
+  - vendor/bin/phpunit
