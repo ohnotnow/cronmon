@@ -1,5 +1,7 @@
 # Cronmon
 
+[![Build Status](https://travis-ci.org/ohnotnow/cronmon.svg?branch=master)](https://travis-ci.org/ohnotnow/cronmon)
+
 A PHP web app to monitor & alert cron jobs using a simple http api.  It allows users to create job entries
 with given periods and grace windows.  Then their scheduled tasks can do a simple HTTP GET to the
 unique URI generated each time they run.  If a job doesn't call in within the given grace window
