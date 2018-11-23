@@ -23,7 +23,7 @@ services:
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_DATABASE: cronmon
-      DB_USERNAME: homestead
+      DB_USERNAME: root
       DB_PASSWORD: secret
       CACHE_DRIVER: redis
       SESSION_DRIVER: redis
@@ -47,7 +47,7 @@ services:
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_DATABASE: cronmon
-      DB_USERNAME: homestead
+      DB_USERNAME: root
       DB_PASSWORD: secret
       CACHE_DRIVER: redis
       SESSION_DRIVER: redis
@@ -70,7 +70,7 @@ services:
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_DATABASE: cronmon
-      DB_USERNAME: homestead
+      DB_USERNAME: root
       DB_PASSWORD: secret
       CACHE_DRIVER: redis
       SESSION_DRIVER: redis
@@ -99,8 +99,8 @@ services:
       - mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: cronmon
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: homestead
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: cronmon
       MYSQL_PASSWORD: secret
 
   mailhog:
