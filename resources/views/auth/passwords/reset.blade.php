@@ -10,7 +10,7 @@
                 <input type="hidden" name="token" value="{{ $token }}">
                 <label>E-Mail Address</label>
                 <p class="cotrol">
-                    <input type="email" class="input" name="email" value="{{ $email or old('email') }}" required autofocus>
+                    <input type="email" class="input" name="email" value="{{ $email ?? old('email') }}" required autofocus>
                 </p>
                 <label>New Password</label>
                 <p class="control">

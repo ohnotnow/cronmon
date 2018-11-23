@@ -873,7 +873,6 @@ module.exports = {
     borderWidths: ['responsive'],
     cursor: ['responsive'],
     display: ['responsive'],
-    flexbox: ['responsive'],
     float: ['responsive'],
     fonts: ['responsive'],
     fontWeights: ['responsive', 'hover', 'focus'],
