@@ -40,6 +40,13 @@
                   </div>
                 </span>
         </div>
+        <div class="mt-2">
+            <label class="title"><span class="text-grey-dark font-black">OR</span> use a cron expression (this takes precedence over the above if set)</label>
+            <p class="control">
+                <input class="input" type="text" name="cron_schedule" value="{{ old('cron_schedule', $job->cron_schedule) }}" placeholder="Eg, */15 * * * *">
+            </p>
+        </div>
+
 </div>
 <div class="mb-8">
         <label class="title">

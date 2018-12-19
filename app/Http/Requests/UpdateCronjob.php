@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use App\Cronjob;
+use Illuminate\Validation\Rule;
+use App\Rules\ValidCronExpression;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCronjob extends FormRequest
 {
@@ -49,6 +50,7 @@ class UpdateCronjob extends FormRequest
             'grace' => 'required|min:1',
             'grace_units' => 'required|in:minute,day,hour,week',
             'email' => 'emails',
+            'cron_schedule' => ['nullable', new ValidCronExpression],
         ];
     }
 }

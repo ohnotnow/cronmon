@@ -57,6 +57,43 @@ class CronjobTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /** @test */
+    public function a_job_with_a_cron_schedule_uses_that_in_priority_over_manual_settings()
+    {
+        $user = factory(User::class)->create();
+        // job should run every 15 minutes using the cron schedule, but every 2hrs by the manual settings
+        $job = $this->createRunningJob($user, [
+            'cron_schedule' => '*/15 * * * *',
+            'grace' => 1,
+            'grace_units' => 'minute',
+            'period' => 2,
+            'period_units' => 'hour',
+            'last_run' => now()->subMinutes(14),
+        ]);
+
+        $this->assertFalse($job->isAwol());
+
+        $job->last_run = now()->subMinutes(17);
+
+        $this->assertTrue($job->isAwol());
+    }
+
+    public function test_it_knows_if_it_has_gone_awol_using_a_cron_expression()
+    {
+        $user = factory(User::class)->create();
+        // job with a cron expression that should run every 15 minutes
+        $job = $this->createRunningJob($user, ['cron_expression' => '*/15 * * * *', 'last_run' => now()->subMinutes(14)]);
+
+        $result = $job->isAwol();
+
+        $this->assertFalse($result);
+
+        // job with a cron expression that should run every 15 minutes
+        $job = $this->createAwolJob($user, ['cron_expression' => '*/15 * * * *', 'last_run' => now()->subMinutes(16)]);
+        $result = $job->isAwol();
+        $this->assertTrue($result);
+    }
+
     public function test_working_jobs_dont_send_notifications()
     {
         Notification::fake();

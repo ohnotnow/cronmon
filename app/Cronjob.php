@@ -4,12 +4,13 @@ namespace App;
 
 use App\CronUuid;
 use Carbon\Carbon;
+use Cron\CronExpression;
 use Illuminate\Database\Eloquent\Model;
 
 class Cronjob extends Model
 {
     protected $fillable = [
-        'name', 'period', 'period_units', 'grace', 'grace_units', 'email', 'is_silenced', 'user_id', 'uuid', 'team_id', 'notes', 'is_logging', 'fallback_email'
+        'name', 'period', 'period_units', 'grace', 'grace_units', 'email', 'is_silenced', 'user_id', 'uuid', 'team_id', 'notes', 'is_logging', 'fallback_email', 'cron_schedule'
     ];
     protected $dates = ['last_run', 'last_alerted'];
 
@@ -63,6 +64,26 @@ class Cronjob extends Model
     }
 
     public function isAwol()
+    {
+        if ($this->cron_schedule) {
+            return $this->isAwolViaCron();
+        }
+        return $this->isAwolViaManual();
+    }
+
+    protected function isAwolViaCron()
+    {
+        $shouldHaveLastRunDate = Carbon::instance(CronExpression::factory($this->cron_schedule)->getPreviousRunDate());
+        $shouldNextRunDate = Carbon::instance(CronExpression::factory($this->cron_schedule)->getNextRunDate());
+        $periodInMinutes = $shouldNextRunDate->diffInMinutes($shouldHaveLastRunDate);
+        $graceMinutes = $this->getGraceInMinutes();
+        if (now()->diffInMinutes($this->last_run) > ($periodInMinutes + $graceMinutes)) {
+            return true;
+        }
+        return false;
+    }
+
+    protected function isAwolViaManual()
     {
         $now = Carbon::now();
         $graceTime = $this->getGraceTimeInMinutes();
@@ -132,6 +153,9 @@ class Cronjob extends Model
 
     public function getSchedule()
     {
+        if ($this->cron_schedule) {
+            return $this->cron_schedule;
+        }
         return 'Every ' . $this->periodIfNotOne() . ' ' . $this->humanPeriodUnits();
     }
 

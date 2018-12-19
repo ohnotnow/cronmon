@@ -27,6 +27,7 @@ abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
             'is_silenced' => false,
             'team_id' => null,
     ];
+
     public function createAwolJob($user, $data = [])
     {
         $data = array_merge($this->jobData, $data);
