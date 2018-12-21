@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/team/{team}', 'TeamController@show')->name('team.show');
     Route::get('/team/{team}/edit', 'TeamController@edit')->name('team.edit');
     Route::post('/team/{team}/edit', 'TeamController@update')->name('team.update');
+    Route::delete('/team/{team}', 'TeamController@destroy')->name('team.delete');
 
     Route::get('/team/{id}/members', 'TeamMemberController@edit')->name('teammember.edit');
     Route::post('/team/{id}/members', 'TeamMemberController@update')->name('teammember.update');

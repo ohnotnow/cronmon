@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Team;
 
 class UiTest extends \Tests\BrowserKitTest
 {
@@ -342,4 +343,5 @@ class UiTest extends \Tests\BrowserKitTest
             ->see('Notes')
             ->see('WPWPWPWPWPWP');
     }
+
 }

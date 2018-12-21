@@ -35,4 +35,10 @@ class Team extends Model
     {
         return $this->members()->where('user_id', $userId)->first();
     }
+
+    public function delete()
+    {
+        $this->jobs->each->update(['team_id' => null]);
+        parent::delete();
+    }
 }

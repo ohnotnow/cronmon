@@ -46,9 +46,12 @@ class TeamController extends Controller
         return redirect()->route('team.show', $team->id);
     }
 
-    public function destroy($id)
+    public function destroy(Team $team)
     {
         $this->authorize('edit-team', $team);
-        //
+
+        $team->delete();
+
+        return redirect()->route('home');
     }
 }
