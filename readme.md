@@ -54,8 +54,8 @@ Clone the repository into a new folder.  Then in the new directory run :
 
 ```
 cp .env.example .env
-php artisan key:generate
 composer install
+php artisan key:generate
 ```
 If you don't have composer already then you can download it from https://getcomposer.org/ .
 
