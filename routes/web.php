@@ -50,5 +50,4 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/job', 'CronjobController@index')->name('job.index');
         Route::get('/team', 'TeamController@index')->name('team.index');
     });
-
 });

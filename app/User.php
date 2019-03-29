@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
 use DB;
 use Log;
 use Storage;
@@ -119,7 +120,7 @@ class User extends Authenticatable implements CanResetPassword
     public static function createNewAdmin($username, $email)
     {
         $user = static::create(
-            ['username' => $username, 'email' => $email, 'is_admin' => true, 'password' => bcrypt(str_random(32))]
+            ['username' => $username, 'email' => $email, 'is_admin' => true, 'password' => bcrypt(Str::random(32))]
         );
         $user->sendResetLink();
     }
@@ -127,7 +128,7 @@ class User extends Authenticatable implements CanResetPassword
     public static function register($properties)
     {
         $user = new static($properties);
-        $user->password = bcrypt(str_random(42));
+        $user->password = bcrypt(Str::random(42));
         $user->save();
         $user->sendResetLink();
         return $user;
