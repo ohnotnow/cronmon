@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
 use App\CronUuid;
 use Carbon\Carbon;
 use Cron\CronExpression;
@@ -183,7 +184,7 @@ class Cronjob extends Model
         if ($this->period == 1) {
             return ucfirst($this->period_units);
         }
-        return ucfirst(str_plural($this->period_units));
+        return ucfirst(Str::plural($this->period_units));
     }
 
     public function humanGraceUnits()
@@ -191,7 +192,7 @@ class Cronjob extends Model
         if ($this->grace == 1) {
             return ucfirst($this->grace_units);
         }
-        return ucfirst(str_plural($this->grace_units));
+        return ucfirst(Str::plural($this->grace_units));
     }
 
     public function hasAlertedRecently()
