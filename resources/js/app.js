@@ -6,8 +6,8 @@ window.Vue = require("vue");
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component("job-list", require("./components/JobList.vue"));
-Vue.component("job-tabs", require("./components/JobTabs.vue"));
+Vue.component("job-list", require("./components/JobList.vue").default);
+Vue.component("job-tabs", require("./components/JobTabs.vue").default);
 
 const app = new Vue({
   el: "#app"

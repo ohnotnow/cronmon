@@ -12,9 +12,10 @@
   "devDependencies": {
     "cross-env": "^5.1",
     "glob-all": "^3.1.0",
-    "laravel-mix": "^2.0",
+    "laravel-mix": "^4.0.16",
     "tailwindcss": "^0.6.1",
-    "vue": "^2.5.16"
+    "vue": "2.6.10",
+    "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
     "laravel-mix-purgecss": "^2.2.0"
