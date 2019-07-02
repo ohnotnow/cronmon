@@ -1,0 +1,7 @@
+.git/
+node_modules/
+vendor/
+npm-debug
+Dockerfile
+stack.yml
+

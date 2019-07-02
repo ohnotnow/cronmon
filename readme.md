@@ -40,13 +40,15 @@ can use SQLite if you have a small install.
 If you have docker available you _should_ be able to run :
 
 ```
-cp .env.docker .env
+export PHP_VERSION=7.3
+export IMAGE_NAME=cronmon
 docker-compose build
-docker-compose up
+docker-compose up 
+# wait a little until things seem to be running, then in another terminal
 docker-compose exec app php artisan cronmon:createadmin username email@whatever.com
 ```
 
-Then the test app will be available at http://localhost:8002/ and all email is redirected to a copy of [Mailhog](https://github.com/mailhog/MailHog) running at http://localhost:18025/.
+Then the test app will be available at http://localhost:8002/ and all email is redirected to a copy of [Mailhog](https://github.com/mailhog/MailHog) running at http://localhost:8125/.
 
 ## Installation
 

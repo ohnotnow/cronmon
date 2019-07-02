@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+role=${CONTAINER_ROLE:-app}
+
+if [ "$role" = "app" ]; then
+
+    curl -f http://localhost/ || exit 1
+    exit 0
+
+elif [ "$role" = "queue" ]; then
+
+    php /var/www/html/artisan horizon:status | grep -q 'Horizon is running' || exit 1
+    exit 0
+
+elif [ "$role" = "scheduler" ]; then
+
+    # need to figure something out for this... if at all checkable
+    exit 0
+
+elif [ "$role" = "migrations" ]; then
+
+    # nothing to do here
+    exit 0
+
+else
+    echo "Could not match the container role \"$role\""
+    exit 1
+fi

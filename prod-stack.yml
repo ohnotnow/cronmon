@@ -1,0 +1,116 @@
+version: "3.7"
+
+x-logging:
+  &default-logging
+  options:
+    max-size: '12m'
+    max-file: '5'
+  driver: json-file
+x-deploy:
+  &default-deploy
+  replicas: 1
+  labels:
+    - "traefik.enable=false"
+  placement:
+    constraints:
+      - node.role == worker
+  update_config:
+    parallelism: 1
+    failure_action: rollback
+    order: start-first
+
+services:
+  app:
+    image: ${IMAGE_NAME}
+    networks:
+      - proxy
+      - mysql
+      - default
+    expose:
+      - "80"
+    environment:
+      CONTAINER_ROLE: app
+    secrets:
+      - source: dotenv
+        target: .env
+    deploy:
+      replicas: 3
+      placement:
+        constraints:
+          - node.role == worker
+        preferences:
+          - spread: node.labels.site
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        order: start-first
+      labels:
+        - "traefik.backend=${TRAEFIK_BACKEND}"
+        - "traefik.docker.network=proxy"
+        - "traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}"
+        - "traefik.enable=true"
+        - "traefik.port=80"
+        - "traefik.default.protocol=http"
+    logging: *default-logging
+
+  scheduler:
+    image: ${IMAGE_NAME}
+    deploy: *default-deploy
+    networks:
+      - mysql
+      - default
+    environment:
+      CONTAINER_ROLE: scheduler
+    secrets:
+      - source: dotenv
+        target: .env
+    logging: *default-logging
+
+  queue:
+    image: ${IMAGE_NAME}
+    deploy: *default-deploy
+    stop_grace_period: 30s
+    networks:
+      - mysql
+      - default
+    environment:
+      CONTAINER_ROLE: queue
+    secrets:
+      - source: dotenv
+        target: .env
+    logging: *default-logging
+
+  migrations:
+    image: ${IMAGE_NAME}
+    deploy: *default-deploy
+    networks:
+      - mysql
+      - default
+    environment:
+      CONTAINER_ROLE: migrations
+    secrets:
+      - source: dotenv
+        target: .env
+
+  redis:
+    # redis v5.0.5 tag as of 2019-06-25
+    # you can get the sha of an image by doing :
+    #  docker pull redis:5.0.5
+    #  docker images --digests | grep redis
+    image: redis@sha256:ca2d9251c2818df48c6598e01a5bdeab46040dc7ab236abe075d7c7343465177
+    deploy: *default-deploy
+    logging: *default-logging
+    networks:
+      - default
+
+secrets:
+  dotenv:
+    external: true
+    name: ${DOTENV_NAME}
+
+networks:
+  default:
+  proxy:
+    external: true
+  mysql:
+    external: true

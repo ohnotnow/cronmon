@@ -23,6 +23,6 @@ Route::post('/ping/{uuid}', 'ApiController@ping')->name('ping');
 // GET job/{uuid}?token={token} -- return json of specific job
 // DELETE job/{uuid}?token={token} -- delete a given job
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+//Route::get('/user', function (Request $request) {
+//    return $request->user();
+//})->middleware('auth:api');

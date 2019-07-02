@@ -1,7 +1,5 @@
 version: "3.7"
 
-# See https://github.com/UoGSoE/docker-stuff for the origins of this file
-
 x-logging:
   &default-logging
   options:
@@ -25,11 +23,19 @@ services:
       - mysql
       - mailhog
     networks:
+      - proxy
       - private
     expose:
       - "80"
-    ports:
-      - "8002:80"
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.backend=${TRAEFIK_BACKEND}"
+        - "traefik.docker.network=proxy"
+        - "traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}"
+        - "traefik.enable=true"
+        - "traefik.port=80"
+        - "traefik.default.protocol=http"
 
   scheduler:
     image: ${IMAGE_NAME}
@@ -38,6 +44,9 @@ services:
       CONTAINER_ROLE: scheduler
     depends_on:
       - app
+    deploy:
+      labels:
+        - "traefik.enable=false"
     networks:
       - private
     secrets:
@@ -47,10 +56,15 @@ services:
   queue:
     image: ${IMAGE_NAME}
     logging: *default-logging
+    stop_grace_period: 30s
     environment:
       CONTAINER_ROLE: queue
     depends_on:
       - app
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=false"
     networks:
       - private
     secrets:
@@ -66,12 +80,19 @@ services:
       CONTAINER_ROLE: migrations
     depends_on:
       - app
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=false"
     secrets:
       - source: dotenv
         target: .env
 
   redis:
-    image: redis:5.0.4
+    image: redis:5.0.5
+    deploy:
+      labels:
+        - "traefik.enable=false"
     networks:
       - private
     volumes:
@@ -79,6 +100,9 @@ services:
 
   mysql:
     image: mysql:5.7
+    deploy:
+      labels:
+        - "traefik.enable=false"
     networks:
       - private
     volumes:
@@ -91,11 +115,18 @@ services:
 
   mailhog:
     image: mailhog/mailhog
+    deploy:
+      labels:
+        - "traefik.backend=${TRAEFIK_BACKEND}-mailhog"
+        - "traefik.docker.network=proxy"
+        - "traefik.frontend.rule=Host:mail-${TRAEFIK_HOSTNAME}"
+        - "traefik.enable=true"
+        - "traefik.port=8025"
+        - "traefik.default.protocol=http"
     expose:
       - "8025"
-    ports:
-      - "8125:8025"
     networks:
+      - proxy
       - private
 
 volumes:
@@ -106,7 +137,10 @@ volumes:
 
 networks:
   private:
+  proxy:
+    external: true
 
 secrets:
   dotenv:
-    file: ./.env.qa
+    external: true
+    name: ${DOTENV_NAME}
