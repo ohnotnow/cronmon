@@ -20,11 +20,15 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $this->validate($request, [
+        $data = $this->validate($request, [
             'username' => ['required', Rule::unique('users')->ignore($request->user()->id)],
             'email' => ['required', 'email', Rule::unique('users')->ignore($request->user()->id)],
         ]);
-        $request->user()->fill($request->all());
+        $request->user()->fill($data);
+        if ($request->filled('new_api_key')) {
+            $key = $request->user()->generateNewApiKey();
+            session()->flash('success', $key);
+        }
         $request->user()->save();
         return redirect()->route('profile.show');
     }

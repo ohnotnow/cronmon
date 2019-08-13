@@ -28,3 +28,14 @@
             </p>
         </div>
     </div>
+
+    @if ($user->api_key)
+    <div class="flex mb-8">
+        <div class="flex-1">
+            <h4 class="title mb-2">Api Key</h4>
+            <p class="subtitle">
+                 <api-key-toggle apikey="{{ $user->api_key }}"></api-key-toggle>
+            </p>
+        </div>
+    </div>
+    @endif

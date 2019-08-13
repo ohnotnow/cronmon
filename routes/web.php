@@ -51,3 +51,5 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/team', 'TeamController@index')->name('team.index');
     });
 });
+
+Route::post('/api/cronjob', 'Api\CronjobController@update')->name('api.cronjob.update');

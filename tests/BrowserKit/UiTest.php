@@ -179,6 +179,18 @@ class UiTest extends \Tests\BrowserKitTest
             </p>');
     }
 
+    public function test_a_user_can_generate_an_api_key()
+    {
+        $user = factory(User::class)->create(['api_key' => null]);
+        $this->actingAs($user)
+            ->visit(route('profile.edit'))
+            ->see('Edit my details')
+            ->check('new_api_key')
+            ->press('Update')
+            ->see('My details');
+        $this->assertNotNull($user->fresh()->api_key);
+    }
+
     public function test_a_user_can_login_with_email_or_password()
     {
         $password = 'hellokitty';

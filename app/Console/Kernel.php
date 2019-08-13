@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         Commands\TruncatePings::class,
         Commands\SilenceAlerts::class,
         Commands\UnsilenceAlerts::class,
+        Commands\CronmonDiscover::class,
     ];
 
     /**

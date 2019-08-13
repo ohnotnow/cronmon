@@ -144,12 +144,12 @@ class Cronjob extends Model
 
     public function getLastRun()
     {
-        return $this->last_run->format('d/m/Y H:i');
+        return $this->last_run ? $this->last_run->format('d/m/Y H:i') : '';
     }
 
     public function getLastRunDiff()
     {
-        return $this->last_run->diffForHumans();
+        return $this->last_run ? $this->last_run->diffForHumans() : '';
     }
 
     public function getSchedule()

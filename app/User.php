@@ -61,6 +61,12 @@ class User extends Authenticatable implements CanResetPassword
         return $job;
     }
 
+    public function generateNewApiKey()
+    {
+        $this->api_key = Str::random(64);
+        return $this->api_key;
+    }
+
     /**
      * This loops over all the non-silenced jobs owned by the user and
      * sends a notification to them if the job is alerting and they

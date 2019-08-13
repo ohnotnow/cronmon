@@ -25,6 +25,13 @@
     </label>
 </div>
 
+<div class="mb-8">
+    <label class="title">
+        <input type="hidden" name="new_api_key" value="0">
+        <input class="checkbox" type="checkbox" value="1" name="new_api_key">
+        Generate a new API key?
+    </label>
+</div>
 
 <hr />
 <div class="mb-8">
