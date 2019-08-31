@@ -23,6 +23,7 @@
         "beyondcode/laravel-dump-server": "^1.0",
         "blastcloud/guzzler": "^1.5",
         "doctrine/dbal": "^2.5",
+        "facade/ignition": "^1.0",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "laravel/browser-kit-testing": "^5.0",

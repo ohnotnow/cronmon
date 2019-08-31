@@ -62,4 +62,13 @@ class Handler extends ExceptionHandler
 
         return redirect()->guest('login');
     }
+
+    protected function whoopsHandler()
+    {
+        try {
+            return app(\Whoops\Handler\HandlerInterface::class);
+        } catch (\Illuminate\Contracts\Container\BindingResolutionException $e) {
+            return (new \Illuminate\Foundation\Exceptions\WhoopsHandler)->forDebug();
+        }
+    }
 }
