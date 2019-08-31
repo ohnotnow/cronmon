@@ -63,11 +63,8 @@ class CronjobApiCrudTest extends TestCase
         $this->guzzler->queueResponse(new \GuzzleHttp\Psr7\Response(200, [], "{job: {}}"));
         $user = factory(User::class)->create(['api_key' => 'hello']);
 
-        Artisan::call('cronmon:discover http://example.com/ hello');
-        dd(Artisan::output());
-        // $this->artisan('cronmon:discover http://example.com/ hello')
-        //     ->expectsOutput('"Cronmon cronmon:checkjobs" Success')
-        //     ->expectsOutput('"Cronmon cronmon:truncatepings" Success"');
-
+        $this->artisan('cronmon:discover http://example.com/ hello')
+            ->expectsOutput('"Cronmon cronmon:checkjobs" Success')
+            ->expectsOutput('"Cronmon cronmon:truncatepings" Success');
     }    
 }
