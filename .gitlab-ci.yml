@@ -19,8 +19,7 @@ stages:
   - build-qa
   - test
   - build-prod
-  - deploy-qa
-  - deploy-prod
+  - deploy
 
 variables:
   QA_IMAGE_NAME: $CI_REGISTRY/$CI_PROJECT_PATH:qa-$CI_COMMIT_SHA
@@ -65,6 +64,7 @@ test:
   - cat .env
   - php vendor/bin/phpunit --colors=never --testdox
   - if [[ -f /usr/local/bin/security-checker ]]; then php /usr/local/bin/security-checker security:check ./composer.lock ; fi
+  - if [[ -f /usr/local/bin/phpcs ]]; then php /usr/local/bin/phpcs --config-set ignore_warnings_on_exit 1 ; php /usr/local/bin/phpcs --standard=PSR2 app ; fi
 
 build-qa-tagged:
   stage: build-qa
@@ -85,7 +85,7 @@ build-prod-tagged:
   - docker push $PROD_IMAGE_NAME
 
 deploy_to_qa:
-  stage: deploy-qa
+  stage: deploy
   when: manual
   environment: qa
   image: docker:stable
@@ -107,8 +107,10 @@ deploy_to_qa:
   - docker -H ssh://deployer@${QA_SERVER} stack deploy -c qa-stack.yml ${STACK_NAME}
 
 deploy_to_prod:
-  stage: deploy-prod
+  stage: deploy
   when: manual
+  only:
+  - master
   environment: prod
   image: docker:stable
   script:

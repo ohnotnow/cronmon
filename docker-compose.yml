@@ -2,21 +2,34 @@ version: "3.7"
 
 # See https://github.com/UoGSoE/docker-stuff for the origins of this file
 
-x-logging:
-  &default-logging
-  options:
-    max-size: '12m'
-    max-file: '5'
-  driver: json-file
+x-env:
+  environment: &default-env
+    MAIL_DRIVER: smtp
+    MAIL_HOST: mailhog
+    MAIL_PORT: 1025
+    REDIS_HOST: redis
+    QUEUE_CONNECTION: redis
+    SESSION_DRIVER: redis
+    DB_CONNECTION: mysql
+    DB_HOST: mysql
+    DB_PORT: 3306
+    DB_DATABASE: homestead
+    DB_USERNAME: homestead
+    DB_PASSWORD: secret
 
 services:
   app:
     image: ${IMAGE_NAME}
-    logging: *default-logging
     environment:
       CONTAINER_ROLE: app
+      <<: *default-env
+    ports:
+      - "${APP_PORT:-3000}:80"
     build:
       context: .
+      target: dev
+    volumes:
+      - .:/var/www/html
     secrets:
       - source: dotenv
         target: .env
@@ -24,63 +37,53 @@ services:
       - redis
       - mysql
       - mailhog
-    networks:
-      - private
-    expose:
-      - "80"
-    ports:
-      - "8002:80"
 
   scheduler:
     image: ${IMAGE_NAME}
-    logging: *default-logging
     environment:
       CONTAINER_ROLE: scheduler
+      <<: *default-env
     depends_on:
       - app
-    networks:
-      - private
+    volumes:
+      - .:/var/www/html
     secrets:
       - source: dotenv
         target: .env
 
   queue:
     image: ${IMAGE_NAME}
-    logging: *default-logging
     environment:
       CONTAINER_ROLE: queue
+      <<: *default-env
     depends_on:
       - app
-    networks:
-      - private
+    volumes:
+      - .:/var/www/html
     secrets:
       - source: dotenv
         target: .env
 
   migrations:
     image: ${IMAGE_NAME}
-    logging: *default-logging
-    networks:
-      - private
     environment:
       CONTAINER_ROLE: migrations
+      <<: *default-env
     depends_on:
       - app
+    volumes:
+      - .:/var/www/html
     secrets:
       - source: dotenv
         target: .env
 
   redis:
     image: redis:5.0.4
-    networks:
-      - private
     volumes:
       - redis:/data
 
   mysql:
     image: mysql:5.7
-    networks:
-      - private
     volumes:
       - mysql:/var/lib/mysql
     environment:
@@ -91,12 +94,8 @@ services:
 
   mailhog:
     image: mailhog/mailhog
-    expose:
-      - "8025"
     ports:
-      - "8125:8025"
-    networks:
-      - private
+      - "3025:8025"
 
 volumes:
   redis:
@@ -104,9 +103,6 @@ volumes:
   mysql:
     driver: "local"
 
-networks:
-  private:
-
 secrets:
   dotenv:
-    file: ./.env.qa
+    file: ./.env

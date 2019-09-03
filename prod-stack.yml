@@ -51,11 +51,13 @@ services:
         - "traefik.enable=true"
         - "traefik.port=80"
         - "traefik.default.protocol=http"
+    stop_grace_period: 2m
     logging: *default-logging
 
   scheduler:
     image: ${IMAGE_NAME}
     deploy: *default-deploy
+    stop_grace_period: 5m
     networks:
       - mysql
       - default
@@ -69,7 +71,7 @@ services:
   queue:
     image: ${IMAGE_NAME}
     deploy: *default-deploy
-    stop_grace_period: 30s
+    stop_grace_period: 5m
     networks:
       - mysql
       - default
@@ -83,6 +85,7 @@ services:
   migrations:
     image: ${IMAGE_NAME}
     deploy: *default-deploy
+    stop_grace_period: 5m
     networks:
       - mysql
       - default
