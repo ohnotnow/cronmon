@@ -9,8 +9,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 abstract class BrowserKitTest extends BaseTestCase
 {
-    use DatabaseMigrations;
     use CreatesApplication;
+    use RefreshDatabase;
 
     /**
      * The base URL to use while testing the application.

@@ -1,11 +1,14 @@
 <?php
 
+namespace Tests;
+
+use App\Cronjob;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Cronjob;
 
-class ApiTest extends Tests\BrowserKitTest
+class ApiTest extends TestCase
 {
     public function test_pinging_a_jobs_uri_updates_its_last_run_field()
     {
