@@ -66,5 +66,5 @@ class CronjobApiCrudTest extends TestCase
         $this->artisan('cronmon:discover http://example.com/ hello')
             ->expectsOutput('"Cronmon cronmon:checkjobs" Success')
             ->expectsOutput('"Cronmon cronmon:truncatepings" Success');
-    }    
+    }
 }

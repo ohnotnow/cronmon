@@ -88,6 +88,9 @@ COPY --from=frontend /home/node/mix-manifest.json /var/www/html/mix-manifest.jso
 #- Copy in our code
 COPY . /var/www/html
 
+#- Clear any cached composer stuff
+RUN rm -fr /var/www/html/bootstrap/cache/*.php
+
 #- If horizon is installed force it to rebuild it's public assets
 RUN if grep -q horizon composer.json; then php /var/www/html/artisan horizon:assets; fi
 
@@ -95,8 +98,7 @@ RUN if grep -q horizon composer.json; then php /var/www/html/artisan horizon:ass
 RUN ln -sf /run/secrets/.env /var/www/html/.env
 
 #- Clean up and production-cache our apps settings/views/routing
-RUN rm -fr /var/www/html/bootstrap/cache/*.php && \
-    php /var/www/html/artisan storage:link && \
+RUN php /var/www/html/artisan storage:link && \
     php /var/www/html/artisan view:cache && \
     php /var/www/html/artisan route:cache && \
     chown -R www-data:www-data storage bootstrap/cache

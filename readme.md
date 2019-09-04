@@ -43,12 +43,12 @@ If you have docker available you _should_ be able to run :
 export PHP_VERSION=7.3
 export IMAGE_NAME=cronmon
 docker-compose build
-docker-compose up 
+docker-compose up
 # wait a little until things seem to be running, then in another terminal
 docker-compose exec app php artisan cronmon:createadmin username email@whatever.com
 ```
 
-Then the test app will be available at http://localhost:8002/ and all email is redirected to a copy of [Mailhog](https://github.com/mailhog/MailHog) running at http://localhost:8125/.
+Then the test app will be available at http://localhost:3000/ and all email is redirected to a copy of [Mailhog](https://github.com/mailhog/MailHog) running at http://localhost:3025/.
 
 ## Installation
 
@@ -73,6 +73,33 @@ Once you are ready you can create an initial admin account by running :
 php artisan cronmon:createadmin username your-email@whatever.com
 ```
 You should be sent a password reset link by email which will let you set a password and log in.
+
+## Production Docker
+
+You should be able to run this inside swarm/kubernetes without too much problem.  There is an example stack file for Docker swarm as `prod-stack.yml`.  To go through the steps manually :
+```
+export PHP_VERSION=7.3
+export IMAGE_NAME=cronmon
+export DOTENV_NAME=cronmon-dotenv-1
+cat .env | docker secret create ${DOTENV_NAME} -
+docker build --target=prod -t $IMAGE_NAME .
+docker stack deploy -c prod-stack.yml cronmon
+```
+If you want to automatically create the initial admin user you can either use environment variables or secrets.  The enviroment variables it looks for are :
+```
+CRONMON_ADMIN_USERNAME=whatever
+CRONMON_ADMIN_EMAIL=whatever@example.com
+CRONMON_ADMIN_PASSWORD=mysecretpassword
+```
+or to use files (eg, Docker secrets) :
+```
+# docker secret create cronmon_username_1 "whatever"
+# docker secret create cronmon_email_1 "whatever@example.com"
+# docker secret create cronmon_password_1 "mysecretpassword"
+CRONMON_ADMIN_USERNAME_FILE=/run/secrets/cronmon_username_1
+CRONMON_ADMIN_EMAIL_FILE=/run/secrets/cronmon_email_1
+CRONMON_ADMIN_PASSWORD_FILE=/run/secrets/cronmon_password_1
+```
 
 ## Updating
 
@@ -122,7 +149,7 @@ will keep 100 records for each job.  You can alter that by changing 'keep_pings'
 
 ## Using the checks
 
-To actually notify the app that a job has run, you sent a straight http get to it's URI (shown in the app).  For 
+To actually notify the app that a job has run, you sent a straight http get to it's URI (shown in the app).  For
 instance, you create a job that shows it's URI as 'http://cronmon.dev:8000/ping/c6ad9b87-f945-440e-bc90-c0bc8794f52a'.
 At the end of a bash script you could use `curl` to 'ping' the app which will update it's status.  A *very* basic
 example might be :
@@ -150,7 +177,7 @@ curl -X POST -F "data=exitcode=44" -s http://cronmon.dev:8000/ping/c6ad9b87-f945
 ## Silencing the whole site
 
 This can be useful if you know there will be a long maintenance window or
-a network outage for instance.  To silence or un-silence the whole site 
+a network outage for instance.  To silence or un-silence the whole site
 you can run :
 ```
 php artisan cronmon:silence

@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\CheckJobs::class,
         Commands\CreateAdmin::class,
+        Commands\AutoCreateAdmin::class,
         Commands\TruncatePings::class,
         Commands\SilenceAlerts::class,
         Commands\UnsilenceAlerts::class,

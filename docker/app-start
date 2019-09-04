@@ -38,6 +38,8 @@ elif [ "$role" = "scheduler" ]; then
 elif [ "$role" = "migrations" ]; then
 
     php /var/www/html/artisan migrate --force
+    php /var/www/html/artisan cronmon:autocreateadmin
+
     while [ true ]
     do
         sleep 86400

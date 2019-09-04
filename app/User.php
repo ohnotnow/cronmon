@@ -123,12 +123,18 @@ class User extends Authenticatable implements CanResetPassword
         return trim($this->jobemail);
     }
 
-    public static function createNewAdmin($username, $email)
+    public static function createNewAdmin($username, $email, $password = null)
     {
-        $user = static::create(
-            ['username' => $username, 'email' => $email, 'is_admin' => true, 'password' => bcrypt(Str::random(32))]
-        );
-        $user->sendResetLink();
+        $user = static::create([
+            'username' => $username,
+            'email' => $email,
+            'is_admin' => true,
+            'password' => bcrypt($password ? $password : Str::random(32)),
+        ]);
+
+        if (!$password) {
+            $user->sendResetLink();
+        }
     }
 
     public static function register($properties)
