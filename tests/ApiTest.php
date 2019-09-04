@@ -2,17 +2,18 @@
 
 namespace Tests;
 
+use App\User;
 use App\Cronjob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiTest extends TestCase
+class ApiTest extends BrowserKitTest
 {
     public function test_pinging_a_jobs_uri_updates_its_last_run_field()
     {
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $job = $this->createRunningJob($user);
 
         $this->get('/ping/' . $job->uuid)->assertResponseOk();
@@ -23,7 +24,7 @@ class ApiTest extends TestCase
 
     public function test_pinging_an_awol_jobs_uri_updates_its_status()
     {
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $job = $this->createAwolJob($user);
         $this->assertTrue($job->isAwol());
 

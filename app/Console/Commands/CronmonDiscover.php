@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Cron\CronExpression;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use Cron\CronExpression;
+use Illuminate\Support\Str;
+use Illuminate\Console\Command;
 
 class CronmonDiscover extends Command
 {
@@ -58,12 +59,12 @@ class CronmonDiscover extends Command
             }
             return (object)[
                 'expression' => $event->expression,
-                'name' => config('app.name') . ' ' . str_after($event->command, '\'artisan\' '), 
+                'name' => config('app.name') . ' ' . Str::after($event->command, '\'artisan\' '),
             ];
         })->map(function ($event) {
             try {
                 $response = $this->client->post(
-                    $this->argument('api_url'), 
+                    $this->argument('api_url'),
                     [
                         \GuzzleHttp\RequestOptions::JSON => [
                             'schedule' => $event->expression,

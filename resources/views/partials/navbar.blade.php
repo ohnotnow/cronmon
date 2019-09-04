@@ -33,7 +33,7 @@
   @if (Auth::user())
     <div class="flex-shrink text-right">
       <form class="" method="POST" action="{{ route('logout') }}">
-        {{ csrf_field() }}
+        @csrf
         <button class="text-orange hover:text-orange-dark">Log out</button>
       </form>
     </div>
