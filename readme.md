@@ -174,6 +174,29 @@ curl -s http://cronmon.dev:8000/ping/c6ad9b87-f945-440e-bc90-c0bc8794f52a?data=e
 curl -X POST -F "data=exitcode=44" -s http://cronmon.dev:8000/ping/c6ad9b87-f945-440e-bc90-c0bc8794f52a
 ```
 
+## Creating/updating jobs via an API call
+
+Users can create an API key in their 'My Account' page (pick Edit -> tick 'generate new api key').  They can then use
+that key to create or update a cron job in the system.  Eg :
+```
+curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" \
+  --data '{"name": "my new job", "schedule": "1 1 * * *", "api_key": "saldkj13240123nesdjna"}' \
+  http://cronmon.dev/api/cronjob
+```
+
+The parameters you can set are :
+```
+"name" - name of the job (existing or create a new one)
+"schedule" - the cron-format you want to use
+"team" - name of the team to associate with this job
+"grace" - amount of time for the grace period
+"grace_units" - the units the grace period is set ('minute' ,'hour', 'day', 'week')
+"period" - the frequency of the job (if you are not setting the 'schedule')
+"period_units" - units for the frequency  ('minute' ,'hour', 'day', 'week')
+```
+
+You must pass a name and your API key and either a schedule _or_ the period & period_units.
+
 ## Silencing the whole site
 
 This can be useful if you know there will be a long maintenance window or
@@ -202,4 +225,4 @@ So I guess you could look on this as ideal if you're after an on-prem, relativel
 ### Todo :
 
 * Do something meaningful with the 'ping' logs for jobs.
-* Possibly create an API for creating/editing jobs so it could be automated as part of a provisioning system, for instance.
+* DONE Possibly create an API for creating/editing jobs so it could be automated as part of a provisioning system, for instance.
