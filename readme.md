@@ -22,12 +22,13 @@ if a job starts going 'alert crazy'.
 
 Users can also over-ride the email address for particular jobs.  So maybe a specific backup job goes to person X, a particular facility/office jobs should go to a mailing list, etc. You can also have a 'fallback' email address which will start to get notified if a job has been alerting for a long while.
 
-
 Users can create teams and allocate jobs/users to the teams.  This allows other members of the
 team to view & edit any jobs which are in their team(s).
 
 HTTP "Pings" can also pass a "data" field to record extra information against the record.  This can
 be used to record, for instance, an exit code or amount of data transferred.
+
+You can also create/update jobs via a simple HTTP API.
 
 ## Requirements
 
