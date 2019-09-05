@@ -31,7 +31,7 @@ be used to record, for instance, an exit code or amount of data transferred.
 
 ## Requirements
 
-See the [Laravel requirements](https://laravel.com/docs/5.6/installation#server-requirements) page.  You also
+See the [Laravel requirements](https://laravel.com/docs/6.0/installation#server-requirements) page.  You also
 need a valid mail server to send the alerts.  You will probably need an SQL server - although you
 can use SQLite if you have a small install.
 
