@@ -189,9 +189,9 @@ The parameters you can set are :
 "name" - name of the job (existing or create a new one)
 "schedule" - the cron-format you want to use
 "team" - name of the team to associate with this job
-"grace" - amount of time for the grace period
+"grace" - amount of time for the grace period (number)
 "grace_units" - the units the grace period is set ('minute' ,'hour', 'day', 'week')
-"period" - the frequency of the job (if you are not setting the 'schedule')
+"period" - the frequency of the job (if you are not setting the 'schedule') - number
 "period_units" - units for the frequency  ('minute' ,'hour', 'day', 'week')
 ```
 
