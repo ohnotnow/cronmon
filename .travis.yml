@@ -8,8 +8,8 @@ php:
   
 before_script:
   - composer self-update
-  - composer install --no-interaction
   - cp .env.travis .env
+  - composer install --no-interaction
   - phpenv rehash
   
 script:
