@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker-compose -f phpunit-compose.yml up --build --exit-code-from phpunit
+

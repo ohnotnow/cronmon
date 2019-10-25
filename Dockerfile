@@ -25,7 +25,7 @@ COPY --chown=node:node package*.json webpack.mix.js .babelrc* tailwind* /home/no
 COPY --chown=node:node resources/js* /home/node/resources/js
 COPY --chown=node:node resources/css* /home/node/resources/css
 
-RUN npm install && \
+RUN npm ci && \
     npm run production && \
     npm cache clean --force
 
@@ -71,6 +71,9 @@ WORKDIR /var/www/html
 
 ENV APP_ENV=production
 ENV APP_DEBUG=0
+
+#- install the redis php extension
+RUN php -m | grep -q redis || pecl install redis-5.0.2 && docker-php-ext-enable redis
 
 #- Copy our start scripts and php/ldap configs in
 COPY docker/ldap.conf /etc/ldap/ldap.conf
