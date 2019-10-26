@@ -14,6 +14,17 @@ x-env:
     DB_DATABASE: homestead
     DB_USERNAME: homestead
     DB_PASSWORD: secret
+    APP_ENV: local
+    APP_KEY: base64:pdFL4zMyLsdoGXrlYhLrEgY76G3ZWjlQYnR6o7JPdr0=
+    APP_DEBUG: 1
+    APP_LOG_LEVEL: debug
+    APP_URL: http://localhost:3000
+    BROADCAST_DRIVER: log
+    CACHE_DRIVER: file
+    SESSION_DRIVER: file
+    QUEUE_DRIVER: file
+    MAIL_FROM_ADDRESS: cronmon@example.org
+    MAIL_FROM_NAME: Cronmon
     CRONMON_ADMIN_USERNAME: ${CRONMON_ADMIN_USERNAME}
     CRONMON_ADMIN_EMAIL: ${CRONMON_ADMIN_EMAIL}
     CRONMON_ADMIN_PASSWORD: ${CRONMON_ADMIN_PASSWORD}
@@ -29,11 +40,6 @@ services:
     build:
       context: .
       target: dev
-    volumes:
-      - .:/var/www/html
-    secrets:
-      - source: dotenv
-        target: .env
     depends_on:
       - redis
       - mysql
@@ -46,11 +52,6 @@ services:
       <<: *default-env
     depends_on:
       - app
-    volumes:
-      - .:/var/www/html
-    secrets:
-      - source: dotenv
-        target: .env
 
   queue:
     image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
@@ -59,11 +60,6 @@ services:
       <<: *default-env
     depends_on:
       - app
-    volumes:
-      - .:/var/www/html
-    secrets:
-      - source: dotenv
-        target: .env
 
   migrations:
     image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
@@ -72,11 +68,6 @@ services:
       <<: *default-env
     depends_on:
       - app
-    volumes:
-      - .:/var/www/html
-    secrets:
-      - source: dotenv
-        target: .env
 
   redis:
     image: redis:5.0.4
@@ -104,6 +95,3 @@ volumes:
   mysql:
     driver: "local"
 
-secrets:
-  dotenv:
-    file: ./.env
