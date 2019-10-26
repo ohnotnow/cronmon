@@ -1,7 +1,5 @@
 version: "3.7"
 
-# See https://github.com/UoGSoE/docker-stuff for the origins of this file
-
 x-env:
   environment: &default-env
     MAIL_DRIVER: smtp
@@ -22,7 +20,7 @@ x-env:
 
 services:
   app:
-    image: ${IMAGE_NAME}
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
     environment:
       CONTAINER_ROLE: app
       <<: *default-env
@@ -42,7 +40,7 @@ services:
       - mailhog
 
   scheduler:
-    image: ${IMAGE_NAME}
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
     environment:
       CONTAINER_ROLE: scheduler
       <<: *default-env
@@ -55,7 +53,7 @@ services:
         target: .env
 
   queue:
-    image: ${IMAGE_NAME}
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
     environment:
       CONTAINER_ROLE: queue
       <<: *default-env
@@ -68,7 +66,7 @@ services:
         target: .env
 
   migrations:
-    image: ${IMAGE_NAME}
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
     environment:
       CONTAINER_ROLE: migrations
       <<: *default-env
