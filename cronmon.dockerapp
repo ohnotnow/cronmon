@@ -44,7 +44,7 @@ x-env:
 
 services:
   app:
-    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.1
     environment:
       CONTAINER_ROLE: app
       <<: *default-env
@@ -59,7 +59,7 @@ services:
       - mailhog
 
   scheduler:
-    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.1
     environment:
       CONTAINER_ROLE: scheduler
       <<: *default-env
@@ -67,7 +67,7 @@ services:
       - app
 
   queue:
-    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.1
     environment:
       CONTAINER_ROLE: queue
       <<: *default-env
@@ -75,7 +75,7 @@ services:
       - app
 
   migrations:
-    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.1
     environment:
       CONTAINER_ROLE: migrations
       <<: *default-env
