@@ -1,0 +1,144 @@
+# This section contains your application metadata.
+# Version of the application
+version: 2.0.0
+# Name of the application
+name: cronmon
+# A short description of the application
+description: Monitor cron jobs
+# List of application maintainers with name and email for each
+maintainers:
+  - name: billy
+    email: billybofh@gmail.com
+
+---
+# This section contains the Compose file that describes your application services.
+version: "3.7"
+
+x-env:
+  environment: &default-env
+    MAIL_DRIVER: ${MAIL_DRIVER}
+    MAIL_HOST: ${MAIL_HOST}
+    MAIL_PORT: ${MAIL_PORT}
+    REDIS_HOST: ${REDIS_HOST}
+    QUEUE_CONNECTION: ${QUEUE_CONNECTION}
+    SESSION_DRIVER: ${SESSION_DRIVER}
+    DB_CONNECTION: ${DB_CONNECTION}
+    DB_HOST: ${DB_HOST}
+    DB_PORT: ${DB_PORT}
+    DB_DATABASE: ${DB_DATABASE}
+    DB_USERNAME: ${DB_USERNAME}
+    DB_PASSWORD: ${DB_PASSWORD}
+    BROADCAST_DRIVER: ${BROADCAST_DRIVER}
+    CACHE_DRIVER: ${CACHE_DRIVER}
+    SESSION_DRIVER: ${SESSION_DRIVER}
+    APP_ENV: ${APP_ENV}
+    APP_KEY: ${APP_KEY}
+    APP_DEBUG: ${APP_DEBUG}
+    APP_LOG_LEVEL: ${APP_LOG_LEVEL}
+    APP_URL: "${APP_URL}:${APP_PORT}"
+    MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
+    MAIL_FROM_NAME: ${MAIL_FROM_NAME}
+    CRONMON_ADMIN_USERNAME: ${CRONMON_ADMIN_USERNAME}
+    CRONMON_ADMIN_EMAIL: ${CRONMON_ADMIN_EMAIL}
+    CRONMON_ADMIN_PASSWORD: ${CRONMON_ADMIN_PASSWORD}
+
+services:
+  app:
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
+    environment:
+      CONTAINER_ROLE: app
+      <<: *default-env
+    ports:
+      - "${APP_PORT}:80"
+    build:
+      context: .
+      target: dev
+    depends_on:
+      - redis
+      - mysql
+      - mailhog
+
+  scheduler:
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
+    environment:
+      CONTAINER_ROLE: scheduler
+      <<: *default-env
+    depends_on:
+      - app
+
+  queue:
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
+    environment:
+      CONTAINER_ROLE: queue
+      <<: *default-env
+    depends_on:
+      - app
+
+  migrations:
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.0
+    environment:
+      CONTAINER_ROLE: migrations
+      <<: *default-env
+    depends_on:
+      - app
+
+  redis:
+    image: redis:5.0.4
+    volumes:
+      - redis:/data
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "${MAILHOG_PORT}:8025"
+
+volumes:
+  redis:
+    driver: "local"
+  mysql:
+    driver: "local"
+
+
+---
+# This section contains the default values for your application parameters.
+APP_DEBUG: true
+APP_ENV: local
+APP_KEY: base64:WfpY+XDjPbQKYb9VDP7zyP4G7WBuB9rLHswC34DsNoc=
+APP_LOG_LEVEL: debug
+APP_PORT: 3000
+APP_URL: http://localhost
+BROADCAST_DRIVER: log
+CACHE_DRIVER: redis
+QUEUE_CONNECTION: redis
+CRONMON_ADMIN_EMAIL: admin@example.com
+CRONMON_ADMIN_PASSWORD: CHANGE_ME
+CRONMON_ADMIN_USERNAME: admin
+DB_CONNECTION: mysql
+DB_HOST: mysql
+DB_PORT: 3306
+DB_DATABASE: homestead
+DB_USERNAME: homestead
+DB_PASSWORD: secret
+MAIL_DRIVER: log
+MAIL_ENCRYPTION: null
+MAIL_HOST: mailhog
+MAIL_PASSWORD: null
+MAIL_PORT: 1025
+MAIL_USERNAME: null
+MAIL_FROM_ADDRESS: cronmon@example.com
+MAIL_FROM_NAME: Cronmon
+REDIS_HOST: redis
+REDIS_PASSWORD: null
+REDIS_PORT: 6379
+SESSION_DRIVER: redis
+MAILHOG_PORT: 3025

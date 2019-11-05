@@ -1,7 +1,6 @@
 ### PHP version we are targetting
 ARG PHP_VERSION=7.2
 
-
 ### Placeholder for basic dev stage for use with docker-compose
 FROM uogsoe/soe-php-apache:${PHP_VERSION} as dev
 
@@ -25,7 +24,7 @@ COPY --chown=node:node package*.json webpack.mix.js .babelrc* tailwind* /home/no
 COPY --chown=node:node resources/js* /home/node/resources/js
 COPY --chown=node:node resources/css* /home/node/resources/css
 
-RUN npm ci && \
+RUN npm install && \
     npm run production && \
     npm cache clean --force
 
