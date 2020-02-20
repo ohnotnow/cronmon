@@ -41,17 +41,27 @@ can use SQLite if you have a small install.
 If you have docker available you _should_ be able to run :
 
 ```
-export PHP_VERSION=7.3
-export IMAGE_NAME=cronmon
-docker-compose build
+export CRONMON_ADMIN_USERNAME=whatever
+export CRONMON_ADMIN_EMAIL=whatever@example.com
+export CRONMON_ADMIN_PASSWORD=mysecretpassword
 docker-compose up
-# wait a little until things seem to be running, then in another terminal
-docker-compose exec app php artisan cronmon:createadmin username email@whatever.com
 ```
 
 Then the test app will be available at http://localhost:3000/ and all email is redirected to a copy of [Mailhog](https://github.com/mailhog/MailHog) running at http://localhost:3025/.
 
-## Installation
+## Docker app
+
+If you have 'docker app' available you _should_ be able to just run :
+```
+docker app install uogsoe/cronmon:2.0.1
+```
+And it'll spin up the application for you with the same settings as the default docker-compose.  You can run :
+```
+docker app inspect uogsoe/cronmon:2.0.1
+```
+to see all the settings you can change for a more custom setup.
+
+## Regular Installation
 
 Clone the repository into a new folder.  Then in the new directory run :
 

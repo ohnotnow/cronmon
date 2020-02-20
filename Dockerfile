@@ -1,7 +1,6 @@
 ### PHP version we are targetting
 ARG PHP_VERSION=7.2
 
-
 ### Placeholder for basic dev stage for use with docker-compose
 FROM uogsoe/soe-php-apache:${PHP_VERSION} as dev
 
@@ -71,6 +70,9 @@ WORKDIR /var/www/html
 
 ENV APP_ENV=production
 ENV APP_DEBUG=0
+
+#- install the redis php extension
+RUN php -m | grep -q redis || pecl install redis-5.0.2 && docker-php-ext-enable redis
 
 #- Copy our start scripts and php/ldap configs in
 COPY docker/ldap.conf /etc/ldap/ldap.conf

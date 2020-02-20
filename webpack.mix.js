@@ -7,5 +7,5 @@ mix
   .postCss("resources/css/animate.css", "public/css")
   .postCss("resources/css/cronmon.css", "public/css", [
     tailwind("tailwind.js")
-  ])
-  .purgeCss();
+  ]);
+//  .purgeCss();

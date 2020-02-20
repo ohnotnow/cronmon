@@ -1,7 +1,5 @@
 version: "3.7"
 
-# See https://github.com/UoGSoE/docker-stuff for the origins of this file
-
 x-env:
   environment: &default-env
     MAIL_DRIVER: smtp
@@ -16,13 +14,28 @@ x-env:
     DB_DATABASE: homestead
     DB_USERNAME: homestead
     DB_PASSWORD: secret
+    BROADCAST_DRIVER: log
+    CACHE_DRIVER: redis
+    SESSION_DRIVER: redis
+    QUEUE_DRIVER: redis
+    APP_ENV: production
+    APP_KEY: base64:WfpY+XDjPbQKYb9VDP7zyP4G7WBuB9rLHswC34DsNoc=
+    APP_DEBUG: 1
+    APP_LOG_LEVEL: debug
+    APP_URL: http://localhost:${APP_PORT:-3000}
+    BROADCAST_DRIVER: log
+    CACHE_DRIVER: file
+    SESSION_DRIVER: file
+    QUEUE_DRIVER: file
+    MAIL_FROM_ADDRESS: cronmon@example.org
+    MAIL_FROM_NAME: Cronmon
     CRONMON_ADMIN_USERNAME: ${CRONMON_ADMIN_USERNAME}
     CRONMON_ADMIN_EMAIL: ${CRONMON_ADMIN_EMAIL}
     CRONMON_ADMIN_PASSWORD: ${CRONMON_ADMIN_PASSWORD}
 
 services:
   app:
-    image: ${IMAGE_NAME}
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.1
     environment:
       CONTAINER_ROLE: app
       <<: *default-env
@@ -31,54 +44,34 @@ services:
     build:
       context: .
       target: dev
-    volumes:
-      - .:/var/www/html
-    secrets:
-      - source: dotenv
-        target: .env
     depends_on:
       - redis
       - mysql
       - mailhog
 
   scheduler:
-    image: ${IMAGE_NAME}
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.1
     environment:
       CONTAINER_ROLE: scheduler
       <<: *default-env
     depends_on:
       - app
-    volumes:
-      - .:/var/www/html
-    secrets:
-      - source: dotenv
-        target: .env
 
   queue:
-    image: ${IMAGE_NAME}
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.1
     environment:
       CONTAINER_ROLE: queue
       <<: *default-env
     depends_on:
       - app
-    volumes:
-      - .:/var/www/html
-    secrets:
-      - source: dotenv
-        target: .env
 
   migrations:
-    image: ${IMAGE_NAME}
+    image: docker.pkg.github.com/ohnotnow/cronmon/cronmon:2.0.1
     environment:
       CONTAINER_ROLE: migrations
       <<: *default-env
     depends_on:
       - app
-    volumes:
-      - .:/var/www/html
-    secrets:
-      - source: dotenv
-        target: .env
 
   redis:
     image: redis:5.0.4
@@ -106,6 +99,3 @@ volumes:
   mysql:
     driver: "local"
 
-secrets:
-  dotenv:
-    file: ./.env
