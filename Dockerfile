@@ -1,5 +1,5 @@
 ### PHP version we are targetting
-ARG PHP_VERSION=7.2
+ARG PHP_VERSION=7.4
 
 ### Placeholder for basic dev stage for use with docker-compose
 FROM uogsoe/soe-php-apache:${PHP_VERSION} as dev

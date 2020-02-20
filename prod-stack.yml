@@ -6,14 +6,35 @@ x-logging:
     max-size: '12m'
     max-file: '5'
   driver: json-file
+x-deploy-php:
+  &default-php-deploy
+  replicas: 1
+  labels:
+    - "traefik.enable=false"
+#  placement:
+#    constraints:
+#      - node.role == worker
+  resources:
+    limits:
+      memory: 2048M
+      cpus: "1"
+    reservations:
+      memory: 200M
+  update_config:
+    parallelism: 1
+    failure_action: rollback
+    order: start-first
 x-deploy:
   &default-deploy
   replicas: 1
   labels:
     - "traefik.enable=false"
-  placement:
-    constraints:
-      - node.role == worker
+#  placement:
+#    constraints:
+#      - node.role == worker
+  resources:
+    limits:
+      memory: 2048M
   update_config:
     parallelism: 1
     failure_action: rollback
@@ -24,42 +45,51 @@ services:
     image: ${IMAGE_NAME}
     networks:
       - proxy
-      - mysql
       - default
     expose:
       - "80"
     environment:
       CONTAINER_ROLE: app
+      CRONMON_ADMIN_USERNAME: ${CRONMON_ADMIN_USERNAME}
+      CRONMON_ADMIN_EMAIL: ${CRONMON_ADMIN_EMAIL}
+      CRONMON_ADMIN_PASSWORD: ${CRONMON_ADMIN_PASSWORD}
     secrets:
       - source: dotenv
         target: .env
     deploy:
-      replicas: 3
+      replicas: 2
       placement:
-        constraints:
-          - node.role == worker
+      #  constraints:
+      #    - node.role == worker
         preferences:
           - spread: node.labels.site
       update_config:
         parallelism: 1
         failure_action: rollback
         order: start-first
+      resources:
+        limits:
+          memory: 2048M
+        reservations:
+          memory: 128M
       labels:
-        - "traefik.backend=${TRAEFIK_BACKEND}"
-        - "traefik.docker.network=proxy"
-        - "traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}"
+        # note: this assumes traefik v2
         - "traefik.enable=true"
-        - "traefik.port=80"
-        - "traefik.default.protocol=http"
+        - "traefik.http.routers.${TRAEFIK_BACKEND}-secured.tls=true"
+        - "traefik.http.routers.${TRAEFIK_BACKEND}.rule=Host(`${TRAEFIK_HOSTNAME}`)"
+        - "traefik.http.routers.${TRAEFIK_BACKEND}.entrypoints=web"
+        - "traefik.http.services.${TRAEFIK_BACKEND}.loadbalancer.server.port=80" # it seems you always need to give traefik a port so it 'notices' the service
+        - "traefik.http.routers.${TRAEFIK_BACKEND}-secured.rule=Host(`${TRAEFIK_HOSTNAME}`)"
+        - "traefik.http.routers.${TRAEFIK_BACKEND}-secured.entrypoints=web-secured"
+        - "traefik.http.routers.${TRAEFIK_BACKEND}-secured.tls.certresolver=mytlschallenge"
     stop_grace_period: 2m
     logging: *default-logging
 
   scheduler:
     image: ${IMAGE_NAME}
-    deploy: *default-deploy
+    deploy: *default-php-deploy
     stop_grace_period: 5m
     networks:
-      - mysql
       - default
     environment:
       CONTAINER_ROLE: scheduler
@@ -70,10 +100,9 @@ services:
 
   queue:
     image: ${IMAGE_NAME}
-    deploy: *default-deploy
+    deploy: *default-php-deploy
     stop_grace_period: 5m
     networks:
-      - mysql
       - default
     environment:
       CONTAINER_ROLE: queue
@@ -84,10 +113,9 @@ services:
 
   migrations:
     image: ${IMAGE_NAME}
-    deploy: *default-deploy
+    deploy: *default-php-deploy
     stop_grace_period: 5m
     networks:
-      - mysql
       - default
     environment:
       CONTAINER_ROLE: migrations
@@ -105,15 +133,32 @@ services:
     logging: *default-logging
     networks:
       - default
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+
+  mysql:
+    image: mysql:5.7
+    deploy: *default-deploy
+    networks:
+      - default
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
 
 secrets:
   dotenv:
     external: true
     name: ${DOTENV_NAME}
 
+volumes:
+  mysql:
+
 networks:
   default:
   proxy:
     external: true
-  mysql:
-    external: true
+
