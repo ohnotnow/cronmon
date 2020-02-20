@@ -1,0 +1,113 @@
+version: "3"
+services:
+  app:
+    image: cronmon
+    container_name: cronmon
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - redis
+      - mysql
+    networks:
+      - private
+    expose:
+      - "80"
+    ports:
+      - "8002:80"
+    environment:
+      APP_ENV: local
+      CONTAINER_ROLE: app
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_DATABASE: cronmon
+      DB_USERNAME: root
+      DB_PASSWORD: secret
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_DRIVER: redis
+      REDIS_HOST: redis
+      MAIL_HOST: mailhog
+      DEFAULT_DISK: images
+
+  scheduler:
+    image: cronmon
+    container_name: cronmon-scheduler
+    depends_on:
+      - app
+    networks:
+      - private
+    environment:
+      APP_ENV: local
+      CONTAINER_ROLE: scheduler
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_DATABASE: cronmon
+      DB_USERNAME: root
+      DB_PASSWORD: secret
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_DRIVER: redis
+      REDIS_HOST: redis
+      MAIL_HOST: mailhog
+
+  queue:
+    image: cronmon
+    container_name: cronmon-queue
+    depends_on:
+      - app
+    networks:
+      - private
+    environment:
+      APP_ENV: local
+      CONTAINER_ROLE: queue
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_DATABASE: cronmon
+      DB_USERNAME: root
+      DB_PASSWORD: secret
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_DRIVER: redis
+      REDIS_HOST: redis
+      MAIL_HOST: mailhog
+
+  redis:
+    container_name: cronmon-redis
+    image: redis:4
+    networks:
+      - private
+    volumes:
+      - redis:/data
+
+  mysql:
+    container_name: cronmon-mysql
+    image: mysql:5.7
+    networks:
+      - private
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: cronmon
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: cronmon
+      MYSQL_PASSWORD: secret
+
+  mailhog:
+    container_name: cronmon-mailhog
+    image: mailhog/mailhog
+    ports:
+      - 18025:8025
+    expose:
+      - "18025"
+    networks:
+      - private
+
+volumes:
+  redis:
+    driver: "local"
+  mysql:
+    driver: "local"
+
+networks:
+  private:

@@ -1,0 +1,68 @@
+version: "3.7"
+
+services:
+  app:
+    image: 127.0.0.1/cronmon
+    environment:
+      CONTAINER_ROLE: app
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - redis
+    networks:
+      - private
+      - mysql-router
+    expose:
+      - "80"
+    secrets:
+      - source: dotenv
+        target: .env
+
+  scheduler:
+    image: 127.0.0.1/cronmon
+    environment:
+      CONTAINER_ROLE: scheduler
+    depends_on:
+      - app
+    networks:
+      - private
+      - mysql-router
+    secrets:
+      - source: dotenv
+        target: .env
+
+  queue:
+    image: 127.0.0.1/cronmon
+    environment:
+      CONTAINER_ROLE: queue
+    depends_on:
+      - app
+    networks:
+      - private
+      - mysql-router
+    secrets:
+      - source: dotenv
+        target: .env
+
+  redis:
+    image: redis:4
+    networks:
+      - private
+    volumes:
+      - redis:/data
+
+volumes:
+  redis:
+    driver: "local"
+
+networks:
+  private:
+  mysql-router:
+    external: true
+
+secrets:
+  dotenv:
+    external: true
+    name: cronmon-dotenv-2019-03-29
+

@@ -25,7 +25,7 @@ if [ "$role" = "app" ]; then
 elif [ "$role" = "queue" ]; then
 
     echo "Running the queue..."
-    php /var/www/html/artisan horizon
+    php /var/www/html/artisan queue:work
 
 elif [ "$role" = "scheduler" ]; then
 
