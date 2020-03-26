@@ -7,10 +7,10 @@
             <span class="flex-1">Add new template</span>
         </h4>
     </div>
-    <form method="POST" action="{{{ route('job.store') }}}">
+    <form method="POST" action="{{{ route('template.store') }}}">
         {{ csrf_field() }}
         @include('template.partials.form')
-        <button class="button is-primary is-outlined" type="submit">Create new job</button>
+        <button class="button is-primary is-outlined" type="submit">Create new template</button>
         <a class="button" href="{{{ route('home') }}}">Cancel</a>
     </form>
 </div>

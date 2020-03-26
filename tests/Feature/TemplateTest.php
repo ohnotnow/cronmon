@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\User;
+use App\Cronjob;
+use App\Template;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -36,5 +38,18 @@ class TemplateTest extends TestCase
         $response->assertRedirect(route('template.index'));
         $response->assertSee('My Amazing Template');
         $response->asssertSee(Str::snake('My Amazing Template'));
+    }
+
+    /** @test */
+    public function we_can_create_a_new_job_based_on_a_template()
+    {
+        $template = factory(Template::class)->create();
+
+        $response = $this->postJson(route('api.template.create_job', $template->slug));
+
+        $response->assertOk();
+        $response->assertJson([
+            'data' => Cronjob::first()->toArray(),
+        ]);
     }
 }

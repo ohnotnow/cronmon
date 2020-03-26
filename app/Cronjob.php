@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cronjob extends Model
 {
     protected $fillable = [
-        'name', 'period', 'period_units', 'grace', 'grace_units', 'email', 'is_silenced', 'user_id', 'uuid', 'team_id', 'notes', 'is_logging', 'fallback_email', 'cron_schedule'
+        'name', 'period', 'period_units', 'grace', 'grace_units', 'email', 'is_silenced', 'user_id', 'uuid', 'team_id', 'notes', 'is_logging', 'fallback_email', 'cron_schedule', 'last_run'
     ];
     protected $dates = ['last_run', 'last_alerted'];
 

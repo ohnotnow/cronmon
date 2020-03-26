@@ -70,7 +70,8 @@ class User extends Authenticatable implements CanResetPassword
     {
         $template = Template::makeNew($data);
         $this->templates()->save($template);
-        return $template;
+        $template->updateSlug();
+        return $template->fresh();
     }
 
     public function generateNewApiKey()

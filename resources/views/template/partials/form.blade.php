@@ -99,12 +99,6 @@
             <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight" name="notes">{{ $template->notes }}</textarea>
 </div>
 <div class="mb-8">
-            <label class="title">
-                <input type="hidden" name="is_silenced" value="0">
-                <input type="checkbox" name="is_silenced" value="1" @if ($template->is_silenced) checked @endif>
-                Alarm Silenced
-            </label>
-        <br />
         <p class="control">
             <label class="title">
                 <input type="hidden" name="is_logging" value="0">

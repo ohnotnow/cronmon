@@ -15,6 +15,9 @@
               </span>
             @endif
           </a>
+          <a class="text-orange hover:text-orange-dark text-center pr-2" href="{{{ route('template.index') }}}">
+            Templates
+          </a>
           @if (Auth::user()->is_admin)
             <a class="text-orange hover:text-orange-dark pr-2" href="{{ route('user.index') }}">
               Users

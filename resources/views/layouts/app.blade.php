@@ -19,6 +19,7 @@
     <script>
         window.Laravel = @json(['csrfToken' => csrf_token()])
     </script>
+    @livewireStyles
 </head>
 <body class="bg-grey-lightest">
     <div id="app">
@@ -33,5 +34,6 @@
     </div>
 
     <script src="/js/app.js"></script>
+    @livewireScripts
 </body>
 </html>

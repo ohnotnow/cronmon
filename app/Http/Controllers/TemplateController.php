@@ -11,6 +11,7 @@ class TemplateController extends Controller
 {
     public function index()
     {
+        return view('template.index');
     }
 
     public function create()

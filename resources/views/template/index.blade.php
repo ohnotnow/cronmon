@@ -1,31 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="tabs">
-      <ul>
-        <li class="is-active" id="yourtemplatestab">
-            <a id="yourtemplates"><h3 class="title is-3">
+<div class="flex justify-between mb-8">
+    <ul class="flex items-start" style="list-style-type: none; padding-left: 0">
+        <li class="mr-8" id="yourtemplatestab">
+            <a id="yourtemplates" class="text-orange hover:text-orange-dark text-xl">
                 Your templates
-            </h3></a>
+            </a>
         </li>
-        <li id="teamtemplatestab">
-            <a id="teamtemplates"><h3 class="title is-3">Team templates</h3></a>
+        <li id="teamtemplatestab" class="mr-8">
+            <a id="teamtemplates" class="text-orange hover:text-orange-dark text-xl">
+                Team templates
+            </a>
         </li>
-       </ul>
-       <ul class="is-right">
-        <li>
-            <a class="button is-pulled-right" href="{{ route('job.create') }}">
+    </ul>
+    <ul style="list-style-type: none;">
+        <li class="">
+            <a class="button" href="{{ route('template.create') }}">
                 Add new template
             </a>
         <li>
-      </ul>
-    </div>
-    <div id="yourjobstable">
-        @include('template.partials.index')
-    </div>
-    @if (Auth::user()->getTeamTemplates()->count() > 0)
-        <div id="teamtemplatetable" style="display:none">
-            @include('template.partials.index', ['templates' => Auth::user()->getTeamTemplates()])
-        </div>
-    @endif
+    </ul>
+</div>
+<div id="yourjobstable">
+    @livewire('template-list')
+</div>
 @endsection

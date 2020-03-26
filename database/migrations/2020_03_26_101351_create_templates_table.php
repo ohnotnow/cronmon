@@ -16,12 +16,14 @@ class CreateTemplatesTable extends Migration
         Schema::create('templates', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('slug')->nullable(); // nullable as we generate the slug post-create
+            $table->string('slug')->nullable(); // nullable as we generate the slug after it's created
             $table->integer('grace');
             $table->string('grace_units');
             $table->integer('period');
             $table->string('period_units');
+            $table->string('cron_schedule')->nullable();
             $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('uuid');
             $table->string('email')->nullable();
             $table->unsignedInteger('team_id')->nullable();
