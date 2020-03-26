@@ -39,6 +39,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/team/{id}/members', 'TeamMemberController@edit')->name('teammember.edit');
     Route::post('/team/{id}/members', 'TeamMemberController@update')->name('teammember.update');
 
+    Route::get('/template', 'TemplateController@index')->name('template.index');
+    Route::get('/template/create', 'TemplateController@create')->name('template.create');
+    Route::post('/tamplte/create', 'TemplateController@store')->name('template.store');
+
     Route::group(['middleware' => 'admin.only', 'prefix' => 'admin'], function () {
         Route::get('/users', 'UserController@index')->name('user.index');
         Route::get('/users/create', 'UserController@create')->name('user.create');

@@ -37,6 +37,11 @@ class User extends Authenticatable implements CanResetPassword
         return $this->belongsToMany(Team::class);
     }
 
+    public function templates()
+    {
+        return $this->hasMany(Template::class);
+    }
+
     public function getAvailableJobs()
     {
         return $this->jobs()->orderBy('name')->get();
@@ -59,6 +64,13 @@ class User extends Authenticatable implements CanResetPassword
         $job = Cronjob::makeNew($data);
         $this->jobs()->save($job);
         return $job;
+    }
+
+    public function addNewTemplate($data)
+    {
+        $template = Template::makeNew($data);
+        $this->templates()->save($template);
+        return $template;
     }
 
     public function generateNewApiKey()

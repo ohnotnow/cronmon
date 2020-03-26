@@ -1,0 +1,1 @@
+<job-list :jobs='@json($jobs)'></job-list>
