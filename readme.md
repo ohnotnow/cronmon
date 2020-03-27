@@ -217,7 +217,7 @@ and that would return :
     "teamname": "None",
     "uri": "http://cronmon.dev:8000/ping/a2a80167-b1a9-4913-a0f0-4cba1e837b1f",
     "is_silenced": false,
-    "name": "Monthly log rotation Job 27/03/2020 12:45",
+    "name": "Monthly Windows Backup Job 27/03/2020 12:45",
     "schedule": "Every  Week",
     "last_run": "27/03/2020 12:45",
     "last_run_diff": "1 second ago"
