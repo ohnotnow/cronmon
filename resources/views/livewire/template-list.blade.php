@@ -1,4 +1,25 @@
 <div>
+    <div class="flex justify-between mb-8">
+        <ul class="flex items-start" style="list-style-type: none; padding-left: 0">
+            <li class="mr-8 @if (! $teams) border-b-2 border-orange @endif">
+                <a class="text-orange hover:text-orange-dark text-xl" wire:click.prevent="$set('teams', false)">
+                    Your templates
+                </a>
+            </li>
+            <li class="mr-8 @if ($teams) border-b-2 border-orange @endif">
+                <a class="text-orange hover:text-orange-dark text-xl" wire:click.prevent="$set('teams', true)">
+                    Team templates
+                </a>
+            </li>
+        </ul>
+        <ul style="list-style-type: none;">
+            <li>
+                <a class="button" href="{{ route('template.create') }}">
+                    Add new template
+                </a>
+            <li>
+        </ul>
+    </div>
 
     <div class="mb-2 text-right">
         <input placeholder="Filter..." wire:model="filter" class="w-full md:w-1/4 shadow appearance-none border focus:border-grey-dark rounded py-2 px-3 text-grey-darker leading-tight" type="text" autofocus>
@@ -33,7 +54,7 @@
         <div class="flex-1 flex-col md:flex-row">
             <div class="flex flex-col md:flex-row">
                 <div class="flex-1 ">
-                    <a href="{{  route('job.show', $template->id) }}" class="text-orange hover:text-orange-dark">
+                    <a href="{{  route('template.show', $template->id) }}" class="text-orange hover:text-orange-dark">
                         {{ $template->name }}
                     </a>
                 </div>

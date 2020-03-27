@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Team;
 use App\User;
 use App\Cronjob;
 use App\Template;
@@ -19,6 +20,7 @@ class TemplateTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
+        $team = factory(Team::class)->create();
 
         $response = $this->actingAs($user)->get(route('template.create'));
 
@@ -32,12 +34,79 @@ class TemplateTest extends TestCase
             'period_units' => 'hour',
             'email' => 'jane@example.com',
             'is_silenced' => false,
-            'team_id' => null,
+            'team_id' => $team->id,
         ]);
 
         $response->assertRedirect(route('template.index'));
-        $response->assertSee('My Amazing Template');
-        $response->asssertSee(Str::snake('My Amazing Template'));
+        tap(Template::first(), function ($template) use ($team, $user) {
+            $this->assertEquals('My Amazing Template', $template->name);
+            $this->assertEquals(5, $template->grace);
+            $this->assertEquals('minute', $template->grace_units);
+            $this->assertEquals(1, $template->period);
+            $this->assertEquals('hour', $template->period_units);
+            $this->assertEquals('jane@example.com', $template->email);
+            $this->assertEquals($team->id, $template->team->id);
+            $this->assertEquals(Str::slug($user->id . '-' . $template->name), $template->slug);
+        });
+    }
+
+    /** @test */
+    public function users_can_edit_their_own_templates()
+    {
+        $this->withoutExceptionHandling();
+        $user = factory(User::class)->create();
+        $template = factory(Template::class)->create(['user_id' => $user->id]);
+        $team = factory(Team::class)->create(['name' => 'blah']);
+
+        $response = $this->actingAs($user)->get(route('template.edit', $template->id));
+
+        $response->assertOk();
+
+        $response = $this->actingAs($user)->post(route('template.update', $template->id), [
+            'name' => 'My Amazing Template',
+            'grace' => 5,
+            'grace_units' => 'minute',
+            'period' => 1,
+            'period_units' => 'hour',
+            'email' => 'jane@example.com',
+            'team_id' => $team->id,
+        ]);
+
+        $response->assertRedirect(route('template.index'));
+        tap($template->fresh(), function ($template) use ($team, $user) {
+            $this->assertEquals('My Amazing Template', $template->name);
+            $this->assertEquals(5, $template->grace);
+            $this->assertEquals('minute', $template->grace_units);
+            $this->assertEquals(1, $template->period);
+            $this->assertEquals('hour', $template->period_units);
+            $this->assertEquals('jane@example.com', $template->email);
+            $this->assertEquals($team->id, $template->team->id);
+            $this->assertEquals(Str::slug($user->id . '-' . $template->name), $template->slug);
+        });
+    }
+
+    /** @test */
+    public function users_cant_edit_other_peoples_templates()
+    {
+        $user = factory(User::class)->create();
+        $template = factory(Template::class)->create();
+        $team = factory(Team::class)->create(['name' => 'blah']);
+
+        $response = $this->actingAs($user)->get(route('template.edit', $template->id));
+
+        $response->assertForbidden();
+
+        $response = $this->actingAs($user)->post(route('template.update', $template->id), [
+            'name' => 'My Amazing Template',
+            'grace' => 5,
+            'grace_units' => 'minute',
+            'period' => 1,
+            'period_units' => 'hour',
+            'email' => 'jane@example.com',
+            'team_id' => $team->id,
+        ]);
+
+        $response->assertForbidden();
     }
 
     /** @test */

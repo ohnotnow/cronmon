@@ -93,4 +93,25 @@ class Template extends Model
         }
         return ucfirst(Str::plural($this->grace_units));
     }
+
+    public function getTeamName()
+    {
+        if ($this->team) {
+            return $this->team->name;
+        }
+        return 'None';
+    }
+
+    public function getEmail()
+    {
+        if ($this->email) {
+            return $this->email;
+        }
+        return $this->user->email;
+    }
+
+    public function uri()
+    {
+        return route('api.template.create_job', $this->slug);
+    }
 }
