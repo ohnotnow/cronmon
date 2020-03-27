@@ -180,4 +180,18 @@ class CronjobApiCrudTest extends TestCase
             ->expectsOutput('"Cronmon cronmon:checkjobs" Success')
             ->expectsOutput('"Cronmon cronmon:truncatepings" Success');
     }
+
+    /** @test */
+    public function we_can_get_the_details_of_a_job_via_http()
+    {
+        $user = factory(User::class)->create();
+        $job = factory(Cronjob::class)->create();
+
+        $response = $this->getJson(route('api.cronjob.show', $job->uuid));
+
+        $response->assertOk();
+        $response->assertJson([
+            'data' => $job->toArray(),
+        ]);
+    }
 }

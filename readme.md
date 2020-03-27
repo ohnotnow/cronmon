@@ -225,6 +225,14 @@ and that would return :
 }
 ```
 
+## Getting the details of a job via HTTP
+
+You can get the details of a given job by just making a call to :
+```bash
+curl http://cronmon.dev:8000/api/cronjob/a2a80167-b1a9-4913-a0f0-4cba1e837b1f
+```
+It will return a JSON blob as above.
+
 ## Silencing the whole site
 
 This can be useful if you know there will be a long maintenance window or

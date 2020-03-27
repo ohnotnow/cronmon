@@ -11,6 +11,15 @@ use App\Team;
 
 class CronjobController extends Controller
 {
+	public function show($uuid)
+	{
+		$job = Cronjob::where('uuid', '=', $uuid)->firstOrFail();
+
+		return response()->json([
+			'data' => $job->toArray(),
+		]);
+	}
+
 	public function update(Request $request)
 	{
 		$request->validate([
