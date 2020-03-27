@@ -106,11 +106,5 @@
                 Record Runs
             </label>
         </p>
-        @if ($template->id)
-                <label class="title">
-                    <input type="checkbox" name="regenerate_uuid" value="1">
-                    Generate new UUID/URI?
-                </label>
-        @endif
 </div>
         <hr />
