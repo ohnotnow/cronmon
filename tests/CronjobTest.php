@@ -74,8 +74,9 @@ class CronjobTest extends TestCase
         $this->assertFalse($job->isAwol());
 
         $job->last_run = now()->subMinutes(17);
+        $job->save();
 
-        $this->assertTrue($job->isAwol());
+        $this->assertTrue($job->fresh()->isAwol());
     }
 
     public function test_it_knows_if_it_has_gone_awol_using_a_cron_expression()
