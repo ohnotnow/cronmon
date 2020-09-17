@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'asset_url'  => '/cronmon',
+    'asset_url'  => env('LIVEWIRE_ASSET_URL', null),
 
     /*
     |--------------------------------------------------------------------------
