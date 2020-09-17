@@ -11,10 +11,10 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="/css/animate.css" rel="stylesheet">
-    <link href="/css/cronmon.css" rel="stylesheet">
+    <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/cronmon.css') }}" rel="stylesheet">
 
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <!-- Scripts -->
     <script>
         window.Laravel = @json(['csrfToken' => csrf_token()])
@@ -33,7 +33,7 @@
 
     </div>
 
-    <script src="/js/app.js"></script>
+    <script src="{{ asset('/js/app.js') }}"></script>
     @livewireScripts
 </body>
 </html>
