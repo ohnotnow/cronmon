@@ -1,7 +1,7 @@
 <nav class="flex items-center justify-between flex-wrap border-b-2 border-orange bg-grey-lightest p-6 shadow">
   <div class="md:flex md:flex-grow md:items-center">
     <div class="">
-      <a class="font-semibold pr-4 text-orange-dark hover:text-orange-dark text-xl tracking-tight" href="/">
+      <a class="font-semibold pr-4 text-orange-dark hover:text-orange-dark text-xl tracking-tight" href="{{ URL::to('/') }}">
         {{ config('app.name') }}
       </a>
     </div>
