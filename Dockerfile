@@ -39,7 +39,7 @@ WORKDIR /var/www/html
 USER nobody
 
 #- make paths that the laravel composer.json expects to exist
-RUN mkdir -p database/seeds database/factories
+RUN mkdir -p database/seeders database/factories
 
 COPY composer.* ./
 

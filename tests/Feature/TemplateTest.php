@@ -19,8 +19,8 @@ class TemplateTest extends TestCase
     public function users_can_make_a_template_to_use_when_automatically_creating_a_job_via_an_api_call()
     {
         $this->withoutExceptionHandling();
-        $user = factory(User::class)->create();
-        $team = factory(Team::class)->create();
+        $user = User::factory()->create();
+        $team = Team::factory()->create();
 
         $response = $this->actingAs($user)->get(route('template.create'));
 
@@ -54,9 +54,9 @@ class TemplateTest extends TestCase
     public function users_can_edit_their_own_templates()
     {
         $this->withoutExceptionHandling();
-        $user = factory(User::class)->create();
-        $template = factory(Template::class)->create(['user_id' => $user->id]);
-        $team = factory(Team::class)->create(['name' => 'blah']);
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['user_id' => $user->id]);
+        $team = Team::factory()->create(['name' => 'blah']);
 
         $response = $this->actingAs($user)->get(route('template.edit', $template->id));
 
@@ -88,9 +88,9 @@ class TemplateTest extends TestCase
     /** @test */
     public function users_cant_edit_other_peoples_templates()
     {
-        $user = factory(User::class)->create();
-        $template = factory(Template::class)->create();
-        $team = factory(Team::class)->create(['name' => 'blah']);
+        $user = User::factory()->create();
+        $template = Template::factory()->create();
+        $team = Team::factory()->create(['name' => 'blah']);
 
         $response = $this->actingAs($user)->get(route('template.edit', $template->id));
 
@@ -112,7 +112,7 @@ class TemplateTest extends TestCase
     /** @test */
     public function we_can_create_a_new_job_based_on_a_template()
     {
-        $template = factory(Template::class)->create();
+        $template = Template::factory()->create();
 
         $response = $this->postJson(route('api.template.create_job', $template->slug));
 

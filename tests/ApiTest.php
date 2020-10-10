@@ -13,7 +13,7 @@ class ApiTest extends BrowserKitTest
 {
     public function test_pinging_a_jobs_uri_updates_its_last_run_field()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job = $this->createRunningJob($user);
 
         $this->get('/ping/' . $job->uuid)->assertResponseOk();
@@ -24,7 +24,7 @@ class ApiTest extends BrowserKitTest
 
     public function test_pinging_an_awol_jobs_uri_updates_its_status()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job = $this->createAwolJob($user);
         $this->assertTrue($job->isAwol());
 

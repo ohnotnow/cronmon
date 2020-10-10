@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         Commands\SilenceAlerts::class,
         Commands\UnsilenceAlerts::class,
         Commands\CronmonDiscover::class,
+        Commands\ReformatRoutes::class,
     ];
 
     /**

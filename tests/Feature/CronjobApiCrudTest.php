@@ -20,7 +20,7 @@ class CronjobApiCrudTest extends TestCase
     public function we_can_create_a_new_cronjob_entry_via_an_api_call()
     {
         $this->withoutExceptionHandling();
-        $user = factory(User::class)->create(['api_key' => 'hello']);
+        $user = User::factory()->create(['api_key' => 'hello']);
 
         $response = $this->postJson(route('api.cronjob.update'), [
             'api_key' => 'hello',
@@ -39,8 +39,8 @@ class CronjobApiCrudTest extends TestCase
     public function we_can_update_an_existing_cronjob_entry_via_an_api_call()
     {
         $this->withoutExceptionHandling();
-        $user = factory(User::class)->create(['api_key' => 'hello']);
-        $job = factory(Cronjob::class)->create(['name' => 'fred', 'cron_schedule' => '*/15 * * * *', 'user_id' => $user->id]);
+        $user = User::factory()->create(['api_key' => 'hello']);
+        $job = Cronjob::factory()->create(['name' => 'fred', 'cron_schedule' => '*/15 * * * *', 'user_id' => $user->id]);
 
         $response = $this->postJson(route('api.cronjob.update'), [
             'api_key' => 'hello',
@@ -59,8 +59,8 @@ class CronjobApiCrudTest extends TestCase
     public function the_api_call_can_optionally_include_the_grace_team_and_period()
     {
         // $this->withoutExceptionHandling();
-        $user = factory(User::class)->create(['api_key' => 'hello']);
-        $team = factory(Team::class)->create(['name' => 'my team']);
+        $user = User::factory()->create(['api_key' => 'hello']);
+        $team = Team::factory()->create(['name' => 'my team']);
         $team->addMember($user->id);
 
         $response = $this->postJson(route('api.cronjob.update'), [
@@ -87,13 +87,13 @@ class CronjobApiCrudTest extends TestCase
         $this->assertEquals('hour', $job->period_units);
     }
 
-        /** @test */
-        public function we_must_pass_either_a_schedule_or_period()
-        {
-            // $this->withoutExceptionHandling();
-            $user = factory(User::class)->create(['api_key' => 'hello']);
+    /** @test */
+    public function we_must_pass_either_a_schedule_or_period()
+    {
+        // $this->withoutExceptionHandling();
+        $user = User::factory()->create(['api_key' => 'hello']);
 
-            $response = $this->postJson(route('api.cronjob.update'), [
+        $response = $this->postJson(route('api.cronjob.update'), [
                 'api_key' => 'hello',
                 'schedule' => '',
                 'name' => 'my amazing task',
@@ -101,9 +101,9 @@ class CronjobApiCrudTest extends TestCase
                 'period_units' => '',
             ]);
 
-            $response->assertJsonValidationErrors(['schedule', 'period', 'period_units']);
+        $response->assertJsonValidationErrors(['schedule', 'period', 'period_units']);
 
-            $response = $this->postJson(route('api.cronjob.update'), [
+        $response = $this->postJson(route('api.cronjob.update'), [
                 'api_key' => 'hello',
                 'schedule' => '',
                 'name' => 'my amazing task',
@@ -111,9 +111,9 @@ class CronjobApiCrudTest extends TestCase
                 'period_units' => 'hour',
             ]);
 
-            $response->assertJsonMissingValidationErrors();
+        $response->assertJsonMissingValidationErrors();
 
-            $response = $this->postJson(route('api.cronjob.update'), [
+        $response = $this->postJson(route('api.cronjob.update'), [
                 'api_key' => 'hello',
                 'schedule' => '1 * * * *',
                 'name' => 'my amazing task',
@@ -121,16 +121,16 @@ class CronjobApiCrudTest extends TestCase
                 'period_units' => '',
             ]);
 
-            $response->assertJsonMissingValidationErrors();
-        }
+        $response->assertJsonMissingValidationErrors();
+    }
 
     /** @test */
     public function data_passed_in_the_request_must_be_valid()
     {
         // $this->withoutExceptionHandling();
-        $user = factory(User::class)->create(['api_key' => 'hello']);
-        $team = factory(Team::class)->create(['name' => 'my team']);
-        $job = factory(Cronjob::class)->create(['user_id' => $user->id]);
+        $user = User::factory()->create(['api_key' => 'hello']);
+        $team = Team::factory()->create(['name' => 'my team']);
+        $job = Cronjob::factory()->create(['user_id' => $user->id]);
 
         $response = $this->postJson(route('api.cronjob.update'), [
             'api_key' => 'hello',
@@ -151,9 +151,9 @@ class CronjobApiCrudTest extends TestCase
     public function we_cannot_add_a_job_to_a_team_we_are_not_part_of()
     {
         // $this->withoutExceptionHandling();
-        $user = factory(User::class)->create(['api_key' => 'hello']);
-        $job = factory(Cronjob::class)->create(['user_id' => $user->id]);
-        $team = factory(Team::class)->create(['name' => 'the A team']);
+        $user = User::factory()->create(['api_key' => 'hello']);
+        $job = Cronjob::factory()->create(['user_id' => $user->id]);
+        $team = Team::factory()->create(['name' => 'the A team']);
 
         $response = $this->postJson(route('api.cronjob.update'), [
             'api_key' => 'hello',
@@ -174,7 +174,7 @@ class CronjobApiCrudTest extends TestCase
         $this->app->instance(\GuzzleHttp\Client::class, $client);
         $this->guzzler->queueResponse(new \GuzzleHttp\Psr7\Response(200, [], "{job: {}}"));
         $this->guzzler->queueResponse(new \GuzzleHttp\Psr7\Response(200, [], "{job: {}}"));
-        $user = factory(User::class)->create(['api_key' => 'hello']);
+        $user = User::factory()->create(['api_key' => 'hello']);
 
         $this->artisan('cronmon:discover http://example.com/ hello')
             ->expectsOutput('"Cronmon cronmon:checkjobs" Success')
@@ -184,8 +184,8 @@ class CronjobApiCrudTest extends TestCase
     /** @test */
     public function we_can_get_the_details_of_a_job_via_http()
     {
-        $user = factory(User::class)->create();
-        $job = factory(Cronjob::class)->create();
+        $user = User::factory()->create();
+        $job = Cronjob::factory()->create();
 
         $response = $this->getJson(route('api.cronjob.show', $job->uuid));
 

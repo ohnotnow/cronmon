@@ -13,8 +13,8 @@ class BrowserKitTeamTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_associate_a_job_with_a_team()
     {
-        $user = factory(User::class)->create();
-        $team = factory(Team::class)->make();
+        $user = User::factory()->create();
+        $team = Team::factory()->make();
         $job = $this->createRunningJob($user);
         $user->teams()->save($team);
         $this->actingAs($user)
@@ -29,9 +29,9 @@ class BrowserKitTeamTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_edit_a_job_which_is_allocated_to_one_of_their_teams()
     {
-        $user1 = factory(User::class)->create();
-        $user2 = factory(User::class)->create();
-        $team = factory(Team::class)->create();
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $team = Team::factory()->create();
         $team->members()->attach([$user1->id, $user2->id]);
         $job = $this->createRunningJob($user1, ['team_id' => $team->id]);
         $this->actingAs($user2)
@@ -45,10 +45,10 @@ class BrowserKitTeamTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_add_and_remove_members_to_a_team()
     {
-        $user1 = factory(User::class)->create();
-        $user2 = factory(User::class)->create();
-        $user3 = factory(User::class)->create();
-        $team = factory(Team::class)->create();
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $user3 = User::factory()->create();
+        $team = Team::factory()->create();
         $team->members()->attach([$user1->id, $user2->id]);
 
         $this->actingAs($user1)
@@ -66,10 +66,10 @@ class BrowserKitTeamTest extends \Tests\BrowserKitTest
 
     public function test_a_user_cant_alter_a_team_they_are_not_on()
     {
-        $user1 = factory(User::class)->create();
-        $user2 = factory(User::class)->create();
-        $user3 = factory(User::class)->create();
-        $team = factory(Team::class)->create();
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $user3 = User::factory()->create();
+        $team = Team::factory()->create();
         $team->members()->attach([$user1->id, $user2->id]);
 
         $this->actingAs($user3)
@@ -85,9 +85,9 @@ class BrowserKitTeamTest extends \Tests\BrowserKitTest
 
     public function test_an_admin_can_view_all_teams()
     {
-        $admin = factory(User::class)->create(['is_admin' => true]);
-        $team1 = factory(Team::class)->create();
-        $team2 = factory(Team::class)->create();
+        $admin = User::factory()->create(['is_admin' => true]);
+        $team1 = Team::factory()->create();
+        $team2 = Team::factory()->create();
 
         $this->actingAs($admin)
             ->visit(route('job.index'))
@@ -96,5 +96,4 @@ class BrowserKitTeamTest extends \Tests\BrowserKitTest
             ->see($team1->name)
             ->see($team2->name);
     }
-
 }
