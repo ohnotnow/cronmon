@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\User;
+use App\Cronjob;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Template;
+use App\CronUuid;
 
-class TemplateFactory extends Factory
+class CronjobFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Template::class;
+    protected $model = Cronjob::class;
 
     /**
      * Define the model's default state.
@@ -23,16 +23,17 @@ class TemplateFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->text(30),
-            'slug' => $this->faker->slug,
-            'user_id' => User::factory(),
-            'uuid' => $this->faker->uuid,
+            'email' => $this->faker->unique()->safeEmail,
+            'name' => $this->faker->word(),
             'grace' => 5,
             'grace_units' => 'minute',
             'period' => 1,
             'period_units' => 'hour',
-            'email' => '',
-            'team_id' => null,
+            'user_id' => \App\User::factory(),
+            'email' => 'test@test.com',
+            'last_run' => null,
+            'is_silenced' => false,
+            'uuid' => CronUuid::generate(),
         ];
     }
 }

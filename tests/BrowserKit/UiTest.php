@@ -14,10 +14,9 @@ use App\Team;
 
 class UiTest extends \Tests\BrowserKitTest
 {
-
     public function test_a_user_can_see_their_jobs()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job1 = $this->createRunningJob($user);
         $job2 = $this->createRunningJob($user);
         $this->actingAs($user)
@@ -31,7 +30,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_create_a_valid_job()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)
             ->visit(route('job.index'))
             ->dontSee('TESTJOB')
@@ -53,7 +52,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_edit_an_existing_job()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job = $this->createRunningJob($user);
         $this->actingAs($user)
             ->visit(route('job.index'))
@@ -74,7 +73,7 @@ class UiTest extends \Tests\BrowserKitTest
     public function test_an_admin_can_add_a_new_user()
     {
         Notification::fake();
-        $user = factory(User::class)->create(['is_admin' => true]);
+        $user = User::factory()->create(['is_admin' => true]);
         $this->actingAs($user)
             ->visit(route('job.index'))
             ->click('Users')
@@ -95,7 +94,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_view_a_job()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job = $this->createRunningJob($user);
         $this->actingAs($user)
             ->visit(route('job.index'))
@@ -106,7 +105,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_delete_a_job()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job = $this->createRunningJob($user);
         $this->actingAs($user)
             ->visit(route('job.index'))
@@ -120,8 +119,8 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_admin_can_see_all_jobs()
     {
-        $admin = factory(User::class)->create(['is_admin' => true]);
-        $user = factory(User::class)->create();
+        $admin = User::factory()->create(['is_admin' => true]);
+        $user = User::factory()->create();
         $job = $this->createRunningJob($user);
         $this->actingAs($admin)
             ->visit(route('job.index'))
@@ -132,8 +131,8 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_an_admin_can_delete_another_user()
     {
-        $admin = factory(User::class)->create(['is_admin' => true]);
-        $user = factory(User::class)->create();
+        $admin = User::factory()->create(['is_admin' => true]);
+        $user = User::factory()->create();
         $job = $this->createRunningJob($user);
         $this->actingAs($admin)
             ->visit(route('user.index'))
@@ -148,7 +147,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_edit_their_account()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)
             ->visit(route('home'))
             ->click('My account')
@@ -165,7 +164,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_silence_their_account()
     {
-        $user = factory(User::class)->create(['is_silenced' => false]);
+        $user = User::factory()->create(['is_silenced' => false]);
         $this->actingAs($user)
             ->visit(route('profile.edit'))
             ->see('Edit my details')
@@ -181,7 +180,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_generate_an_api_key()
     {
-        $user = factory(User::class)->create(['api_key' => null]);
+        $user = User::factory()->create(['api_key' => null]);
         $this->actingAs($user)
             ->visit(route('profile.edit'))
             ->see('Edit my details')
@@ -196,7 +195,7 @@ class UiTest extends \Tests\BrowserKitTest
         $password = 'hellokitty';
         $username = 'testuser';
         $email = 'test@example.com';
-        $user = factory(User::class)->create(
+        $user = User::factory()->create(
             ['username' => $username, 'email' => $email, 'password' => bcrypt($password)]
         );
         $this->visit(route('login'))
@@ -215,7 +214,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_user_cannot_create_two_jobs_with_the_same_name()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job1 = $this->createRunningJob($user);
         $job2 = $this->createRunningJob($user);
 
@@ -229,13 +228,12 @@ class UiTest extends \Tests\BrowserKitTest
             ->type($job1->name, 'name')
             ->press('Create new job')
             ->see('The name has already been taken');
-
     }
 
     public function test_different_users_can_create_jobs_with_the_same_name_as_another_user()
     {
-        $user1 = factory(User::class)->create();
-        $user2 = factory(User::class)->create();
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
         $job1 = $this->createRunningJob($user1);
 
         $this->actingAs($user2)
@@ -244,12 +242,11 @@ class UiTest extends \Tests\BrowserKitTest
             ->press('Create new job')
             ->dontSee('The name has already been taken')
             ->see($job1->name);
-
     }
 
     public function test_user_can_regenerate_a_uuid()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job = $this->createRunningJob($user, ['is_silenced' => true]);
 
         $this->actingAs($user)
@@ -264,9 +261,9 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_an_admin_can_change_job_owner()
     {
-        $admin = factory(User::class)->create(['is_admin' => true]);
-        $user1 = factory(User::class)->create();
-        $user2 = factory(User::class)->create();
+        $admin = User::factory()->create(['is_admin' => true]);
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
         $job = $this->createRunningJob($user1);
         $this->actingAs($admin)
             ->visit(route('user.show', $user1->id))
@@ -284,8 +281,8 @@ class UiTest extends \Tests\BrowserKitTest
     public function test_an_admin_can_generate_a_password_reset_for_a_user()
     {
         Notification::fake();
-        $admin = factory(User::class)->create(['is_admin' => true]);
-        $user = factory(User::class)->create();
+        $admin = User::factory()->create(['is_admin' => true]);
+        $user = User::factory()->create();
         $this->actingAs($user)
             ->visit(route('profile.edit'))
             ->dontSee('Reset users password');
@@ -299,7 +296,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_job_which_is_set_to_log_runs_shows_its_ping_history()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job = $this->createRunningJob($user);
         $job->is_logging = true;
         $job->save();
@@ -314,8 +311,8 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_regular_user_cannot_view_or_edit_another_users_job()
     {
-        $user1 = factory(User::class)->create();
-        $user2 = factory(User::class)->create();
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
         $job = $this->createRunningJob($user2);
         $this->actingAs($user1)
             ->get(route('job.show', $job->id))
@@ -330,7 +327,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_regular_user_cannot_access_admin_routes()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job = $this->createRunningJob($user);
         $this->actingAs($user)
             ->get(route('user.show', $user->id))
@@ -342,7 +339,7 @@ class UiTest extends \Tests\BrowserKitTest
 
     public function test_a_user_can_add_notes_to_a_cronjob()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $job = $this->createRunningJob($user);
         $this->actingAs($user)
             ->visit(route('job.show', $job->id))
@@ -355,5 +352,4 @@ class UiTest extends \Tests\BrowserKitTest
             ->see('Notes')
             ->see('WPWPWPWPWPWP');
     }
-
 }

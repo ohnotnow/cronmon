@@ -13,11 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/ping/{uuid}', 'ApiController@ping')->name('ping.get');
-Route::post('/ping/{uuid}', 'ApiController@ping')->name('ping.post');
-Route::post('/api/templates/{slug}', 'Api\TemplateController@store')->name('api.template.create_job');
+Route::get('/ping/{uuid}', [App\Http\Controllers\ApiController::class, 'ping'])->name('ping.get');
+Route::post('/ping/{uuid}', [App\Http\Controllers\ApiController::class, 'ping'])->name('ping.post');
+Route::post('/api/templates/{slug}', [App\Http\Controllers\Api\TemplateController::class, 'store'])->name('api.template.create_job');
 
-Route::get('/api/cronjob/{uuid}', 'Api\CronjobController@show')->name('api.cronjob.show');
+Route::get('/api/cronjob/{uuid}', [App\Http\Controllers\Api\CronjobController::class, 'show'])->name('api.cronjob.show');
 
 // POST job  -- create a new job - returns json of the job
 // POST job/{uuid}  -- update a job - returns json of the job

@@ -8,24 +8,24 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
-        "guzzlehttp/guzzle": "~6.0",
-        "laravel/framework": "^7.0",
-        "laravel/horizon": "^4.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/framework": "^8.0",
+        "laravel/horizon": "^5.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0",
-        "livewire/livewire": "^1.0",
-        "ramsey/uuid": "^3.5"
+        "laravel/ui": "^3.0",
+        "livewire/livewire": "^2.0",
+        "ramsey/uuid": "^4.0"
     },
     "require-dev": {
-        "facade/ignition": "^2.0",
+        "facade/ignition": "^2.3.6",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^4.1",
-        "phpunit/phpunit": "^8.5",
-        "laravel/dusk": "^5.0",
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^9.0",
+        "laravel/dusk": "^6.0",
         "blastcloud/guzzler": "^1.5",
         "laravel/browser-kit-testing": "^6.0"
     },
@@ -41,11 +41,10 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
-        },
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"        },
         "classmap": [
-            "database/seeds",
-            "database/factories"
         ]
     },
     "autoload-dev": {

@@ -12,10 +12,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\JobHasGoneAwol;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable implements CanResetPassword
 {
     use Notifiable;
+    use HasFactory;
 
     protected $fillable = [
         'username', 'email', 'password', 'is_admin', 'is_silenced'
