@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/ping/{uuid}', 'ApiController@ping')->name('ping');
-Route::post('/ping/{uuid}', 'ApiController@ping')->name('ping');
+Route::get('/ping/{uuid}', 'ApiController@ping')->name('ping.get');
+Route::post('/ping/{uuid}', 'ApiController@ping')->name('ping.post');
 Route::post('/api/templates/{slug}', 'Api\TemplateController@store')->name('api.template.create_job');
 
 Route::get('/api/cronjob/{uuid}', 'Api\CronjobController@show')->name('api.cronjob.show');

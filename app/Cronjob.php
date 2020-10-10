@@ -234,7 +234,7 @@ class Cronjob extends Model
 
     public function uri()
     {
-        return route('ping', $this->uuid);
+        return route('ping.get', $this->uuid);
     }
 
     public function getTeamName()
