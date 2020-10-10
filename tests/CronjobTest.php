@@ -6,6 +6,7 @@ namespace Tests;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Notifications\AnonymousNotifiable;
 use App\Notifications\JobHasGoneAwol;
@@ -16,6 +17,8 @@ use Carbon\Carbon;
 
 class CronjobTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * NOTE: this test doesn't really test anything as when Laravel is fake()ing the Notifications
      * it doesn't call the $user->routeNotificationForMail() method :-/  If you want to see that
