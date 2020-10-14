@@ -30,9 +30,11 @@ be used to record, for instance, an exit code or amount of data transferred.
 
 You can also create/update jobs via a simple HTTP API.
 
+You can create 'templates' for jobs and then use those to create a new job via an HTTP call with all the options set to match the template.
+
 ## Requirements
 
-See the [Laravel requirements](https://laravel.com/docs/6.0/installation#server-requirements) page.  You also
+See the [Laravel requirements](https://laravel.com/docs/7.0/installation#server-requirements) page.  You also
 need a valid mail server to send the alerts.  You will probably need an SQL server - although you
 can use SQLite if you have a small install.
 
@@ -48,18 +50,6 @@ docker-compose up
 ```
 
 Then the test app will be available at http://localhost:3000/ and all email is redirected to a copy of [Mailhog](https://github.com/mailhog/MailHog) running at http://localhost:3025/.
-
-## Docker app
-
-If you have 'docker app' available you _should_ be able to just run :
-```
-docker app install uogsoe/cronmon:2.0.1
-```
-And it'll spin up the application for you with the same settings as the default docker-compose.  You can run :
-```
-docker app inspect uogsoe/cronmon:2.0.1
-```
-to see all the settings you can change for a more custom setup.
 
 ## Regular Installation
 
@@ -207,6 +197,41 @@ The parameters you can set are :
 ```
 
 You must pass a name and your API key and either a schedule _or_ the period & period_units.
+
+## Creating a job via a templete and API call
+
+In the main UI you can create a template and fill in the options you want.  It will then show you a URL that you can make a POST
+request to - a new job will be created and it's details will be returned to you as a JSON object.  Eg:
+```bash
+curl -X POST http://cronmon.dev:8000/api/templates/3-monthly-windows-backup
+```
+and that would return :
+```json
+{
+  "data": {
+    "id": 8,
+    "is_awol": false,
+    "show_url": "http://cronmon.dev:8000/job/8",
+    "user_url": "http://cronmon.dev:8000/admin/user/1",
+    "username": "admin",
+    "teamname": "None",
+    "uri": "http://cronmon.dev:8000/ping/a2a80167-b1a9-4913-a0f0-4cba1e837b1f",
+    "is_silenced": false,
+    "name": "Monthly Windows Backup Job 27/03/2020 12:45",
+    "schedule": "Every  Week",
+    "last_run": "27/03/2020 12:45",
+    "last_run_diff": "1 second ago"
+  }
+}
+```
+
+## Getting the details of a job via HTTP
+
+You can get the details of a given job by just making a call to :
+```bash
+curl http://cronmon.dev:8000/api/cronjob/a2a80167-b1a9-4913-a0f0-4cba1e837b1f
+```
+It will return a JSON blob as above.
 
 ## Silencing the whole site
 

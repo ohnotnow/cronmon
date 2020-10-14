@@ -11,9 +11,9 @@ x-deploy-php:
   replicas: 1
   labels:
     - "traefik.enable=false"
-#  placement:
-#    constraints:
-#      - node.role == worker
+  placement:
+    constraints:
+      - node.labels.type != vm
   resources:
     limits:
       memory: 2048M
@@ -29,9 +29,9 @@ x-deploy:
   replicas: 1
   labels:
     - "traefik.enable=false"
-#  placement:
-#    constraints:
-#      - node.role == worker
+  placement:
+    constraints:
+      - node.labels.type != vm
   resources:
     limits:
       memory: 2048M
@@ -50,17 +50,14 @@ services:
       - "80"
     environment:
       CONTAINER_ROLE: app
-      CRONMON_ADMIN_USERNAME: ${CRONMON_ADMIN_USERNAME}
-      CRONMON_ADMIN_EMAIL: ${CRONMON_ADMIN_EMAIL}
-      CRONMON_ADMIN_PASSWORD: ${CRONMON_ADMIN_PASSWORD}
     secrets:
       - source: dotenv
         target: .env
     deploy:
       replicas: 2
       placement:
-      #  constraints:
-      #    - node.role == worker
+        constraints:
+          - node.labels.type != vm
         preferences:
           - spread: node.labels.site
       update_config:
@@ -119,6 +116,9 @@ services:
       - default
     environment:
       CONTAINER_ROLE: migrations
+      CRONMON_ADMIN_USERNAME: ${CRONMON_ADMIN_USERNAME}
+      CRONMON_ADMIN_EMAIL: ${CRONMON_ADMIN_EMAIL}
+      CRONMON_ADMIN_PASSWORD: ${CRONMON_ADMIN_PASSWORD}
     secrets:
       - source: dotenv
         target: .env

@@ -12,10 +12,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\JobHasGoneAwol;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable implements CanResetPassword
 {
     use Notifiable;
+    use HasFactory;
 
     protected $fillable = [
         'username', 'email', 'password', 'is_admin', 'is_silenced'
@@ -35,6 +37,11 @@ class User extends Authenticatable implements CanResetPassword
     public function teams()
     {
         return $this->belongsToMany(Team::class);
+    }
+
+    public function templates()
+    {
+        return $this->hasMany(Template::class);
     }
 
     public function getAvailableJobs()
@@ -59,6 +66,14 @@ class User extends Authenticatable implements CanResetPassword
         $job = Cronjob::makeNew($data);
         $this->jobs()->save($job);
         return $job;
+    }
+
+    public function addNewTemplate($data)
+    {
+        $template = Template::makeNew($data);
+        $this->templates()->save($template);
+        $template->updateSlug();
+        return $template->fresh();
     }
 
     public function generateNewApiKey()

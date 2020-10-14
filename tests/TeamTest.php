@@ -14,8 +14,8 @@ class TeamTest extends TestCase
 {
     public function test_we_can_check_a_user_is_on_a_given_team()
     {
-        $user = factory(User::class)->create();
-        $team = factory(Team::class)->make();
+        $user = User::factory()->create();
+        $team = Team::factory()->make();
 
         $this->assertFalse($user->onTeam($team));
 
@@ -26,8 +26,8 @@ class TeamTest extends TestCase
 
     public function test_a_user_cant_be_added_to_a_team_twice()
     {
-        $user1 = factory(User::class)->create();
-        $team = factory(Team::class)->create();
+        $user1 = User::factory()->create();
+        $team = Team::factory()->create();
 
         $team->addMember($user1->id);
         $this->assertEquals(1, $team->members->count());
@@ -40,8 +40,8 @@ class TeamTest extends TestCase
     /** @test */
     public function deleting_a_team_removes_all_members()
     {
-        $user1 = factory(User::class)->create();
-        $team = factory(Team::class)->create();
+        $user1 = User::factory()->create();
+        $team = Team::factory()->create();
 
         $team->addMember($user1->id);
 
@@ -55,9 +55,9 @@ class TeamTest extends TestCase
     /** @test */
     public function deleting_a_team_sets_any_jobs_which_were_associated_with_it_to_have_a_null_team_id()
     {
-        $user1 = factory(User::class)->create();
-        $team = factory(Team::class)->create();
-        $job = factory(Cronjob::class)->create([
+        $user1 = User::factory()->create();
+        $team = Team::factory()->create();
+        $job = Cronjob::factory()->create([
             'user_id' => $user1->id,
             'team_id' => $team->id,
         ]);
@@ -70,8 +70,8 @@ class TeamTest extends TestCase
     /** @test */
     public function a_member_of_a_team_can_delete_the_team()
     {
-        $team = factory(Team::class)->create();
-        $user = factory(User::class)->create();
+        $team = Team::factory()->create();
+        $user = User::factory()->create();
         $team->addMember($user);
 
         $response = $this->actingAs($user)->delete(route('team.delete', $team->id));
@@ -84,8 +84,8 @@ class TeamTest extends TestCase
     /** @test */
     public function a_user_cant_delete_a_team_they_are_not_a_member_of()
     {
-        $team = factory(Team::class)->create();
-        $user = factory(User::class)->create();
+        $team = Team::factory()->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->delete(route('team.delete', $team->id));
 
@@ -96,8 +96,8 @@ class TeamTest extends TestCase
     /** @test */
     public function an_admin_can_delete_any_team()
     {
-        $team = factory(Team::class)->create();
-        $admin = factory(User::class)->create(['is_admin' => true]);
+        $team = Team::factory()->create();
+        $admin = User::factory()->create(['is_admin' => true]);
 
         $response = $this->actingAs($admin)->delete(route('team.delete', $team->id));
 

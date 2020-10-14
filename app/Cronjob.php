@@ -6,12 +6,15 @@ use Illuminate\Support\Str;
 use App\CronUuid;
 use Carbon\Carbon;
 use Cron\CronExpression;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Cronjob extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'name', 'period', 'period_units', 'grace', 'grace_units', 'email', 'is_silenced', 'user_id', 'uuid', 'team_id', 'notes', 'is_logging', 'fallback_email', 'cron_schedule'
+        'name', 'period', 'period_units', 'grace', 'grace_units', 'email', 'is_silenced', 'user_id', 'uuid', 'team_id', 'notes', 'is_logging', 'fallback_email', 'cron_schedule', 'last_run'
     ];
     protected $dates = ['last_run', 'last_alerted'];
 
@@ -234,7 +237,7 @@ class Cronjob extends Model
 
     public function uri()
     {
-        return route('ping', $this->uuid);
+        return route('ping.get', $this->uuid);
     }
 
     public function getTeamName()

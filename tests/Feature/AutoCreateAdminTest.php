@@ -33,11 +33,11 @@ class AutoCreateAdminTest extends TestCase
     /** @test */
     public function we_can_automatically_create_an_admin_user_automatically_via_the_content_of_files()
     {
-        $usernameFile = tempnam(sys_get_temp_dir(), 'prefix');
+        $usernameFile = tempnam(sys_get_temp_dir(), 'prefixx');
         file_put_contents($usernameFile, 'jackie');
-        $emailFile = tempnam(sys_get_temp_dir(), 'prefix');
+        $emailFile = tempnam(sys_get_temp_dir(), 'prefixx');
         file_put_contents($emailFile, 'jackie@example.com');
-        $passwordFile = tempnam(sys_get_temp_dir(), 'prefix');
+        $passwordFile = tempnam(sys_get_temp_dir(), 'prefixx');
         file_put_contents($passwordFile, 'password1');
 
         config(['cronmon.admin_username_file' => $usernameFile]);

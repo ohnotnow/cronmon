@@ -31,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
         });
         // fix for laravel 5.4 using multibyte strings which breaks on older mysql/mariadb
         Schema::defaultStringLength(191);
+        if(env('FORCE_HTTPS',false)) { // Default value should be false for local server
+            URL::forceSchema('https');
+        }
     }
 
     /**
