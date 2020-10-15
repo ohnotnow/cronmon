@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Team;
-use App\User;
 use App\Cronjob;
+use App\Team;
 use App\Template;
-use Tests\TestCase;
-use Illuminate\Support\Str;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
+use Tests\TestCase;
 
 class TemplateTest extends TestCase
 {
@@ -46,7 +46,7 @@ class TemplateTest extends TestCase
             $this->assertEquals('hour', $template->period_units);
             $this->assertEquals('jane@example.com', $template->email);
             $this->assertEquals($team->id, $template->team->id);
-            $this->assertEquals(Str::slug($user->id . '-' . $template->name), $template->slug);
+            $this->assertEquals(Str::slug($user->id.'-'.$template->name), $template->slug);
         });
     }
 
@@ -81,7 +81,7 @@ class TemplateTest extends TestCase
             $this->assertEquals('hour', $template->period_units);
             $this->assertEquals('jane@example.com', $template->email);
             $this->assertEquals($team->id, $template->team->id);
-            $this->assertEquals(Str::slug($user->id . '-' . $template->name), $template->slug);
+            $this->assertEquals(Str::slug($user->id.'-'.$template->name), $template->slug);
         });
     }
 

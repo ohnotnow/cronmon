@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Template;
 use App\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Template;
 
 class TemplateFactory extends Factory
 {

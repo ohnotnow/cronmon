@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use App\Rules\ValidCronExpression;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTemplate extends FormRequest
 {
@@ -26,6 +26,7 @@ class StoreTemplate extends FormRequest
     public function rules()
     {
         $request = $this;
+
         return [
             'name' => ['required', 'max:255', Rule::unique('templates')->where(function ($query) use ($request) {
                 $query->where('user_id', $request->user()->id);

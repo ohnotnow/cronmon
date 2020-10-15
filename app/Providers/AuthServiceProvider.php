@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -38,6 +38,7 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->onTeam($job->team_id)) {
                 return true;
             }
+
             return false;
         });
         Gate::define('view-job', function ($user, $job) {
@@ -47,6 +48,7 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->onTeam($job->team_id)) {
                 return true;
             }
+
             return false;
         });
         Gate::define('edit-job', function ($user, $job) {
@@ -56,12 +58,14 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->onTeam($job->team_id)) {
                 return true;
             }
+
             return false;
         });
         Gate::define('edit-team', function ($user, $team) {
             if ($user->onTeam($team)) {
                 return true;
             }
+
             return false;
         });
     }

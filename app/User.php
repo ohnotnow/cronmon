@@ -2,17 +2,17 @@
 
 namespace App;
 
-use Illuminate\Support\Str;
+use App\Notifications\JobHasGoneAwol;
+use Carbon\Carbon;
 use DB;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use Log;
 use Storage;
-use Carbon\Carbon;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Notifications\JobHasGoneAwol;
-use Illuminate\Contracts\Auth\CanResetPassword;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable implements CanResetPassword
 {
@@ -20,7 +20,7 @@ class User extends Authenticatable implements CanResetPassword
     use HasFactory;
 
     protected $fillable = [
-        'username', 'email', 'password', 'is_admin', 'is_silenced'
+        'username', 'email', 'password', 'is_admin', 'is_silenced',
     ];
 
     protected $hidden = [
@@ -53,6 +53,7 @@ class User extends Authenticatable implements CanResetPassword
     {
         $teamIds = $this->teams()->pluck('team_id')->toArray();
         $jobs = Cronjob::whereIn('team_id', $teamIds)->where('user_id', '!=', $this->id)->orderBy('name')->get();
+
         return $jobs;
     }
 
@@ -65,6 +66,7 @@ class User extends Authenticatable implements CanResetPassword
     {
         $job = Cronjob::makeNew($data);
         $this->jobs()->save($job);
+
         return $job;
     }
 
@@ -73,12 +75,14 @@ class User extends Authenticatable implements CanResetPassword
         $template = Template::makeNew($data);
         $this->templates()->save($template);
         $template->updateSlug();
+
         return $template->fresh();
     }
 
     public function generateNewApiKey()
     {
         $this->api_key = Str::random(64);
+
         return $this->api_key;
     }
 
@@ -86,7 +90,7 @@ class User extends Authenticatable implements CanResetPassword
      * This loops over all the non-silenced jobs owned by the user and
      * sends a notification to them if the job is alerting and they
      * haven't already had an email about it recently (as defined in
-     * config/cronmon.php)
+     * config/cronmon.php).
      */
     public function checkJobs()
     {
@@ -120,13 +124,14 @@ class User extends Authenticatable implements CanResetPassword
         if ($this->jobemail) {
             return $this->parseJobEmail();
         }
+
         return $this->email;
     }
 
     /**
      * A cronjob alert email can be sent to a comma-seperated list - this
      * just checks for that and returns an array of emails if it looks
-     * like that's the case
+     * like that's the case.
      */
     public function parseJobEmail()
     {
@@ -135,6 +140,7 @@ class User extends Authenticatable implements CanResetPassword
                 return trim($address);
             })->toArray();
         }
+
         return trim($this->jobemail);
     }
 
@@ -147,7 +153,7 @@ class User extends Authenticatable implements CanResetPassword
             'password' => bcrypt($password ? $password : Str::random(32)),
         ]);
 
-        if (!$password) {
+        if (! $password) {
             $user->sendResetLink();
         }
     }
@@ -158,13 +164,14 @@ class User extends Authenticatable implements CanResetPassword
         $user->password = bcrypt(Str::random(42));
         $user->save();
         $user->sendResetLink();
+
         return $user;
     }
 
     public function sendResetLink()
     {
         $token = $this->createResetToken();
-        Log::info('Sent a password reset token for ' . $this->email . ' - token ' . $token);
+        Log::info('Sent a password reset token for '.$this->email.' - token '.$token);
         $this->sendPasswordResetNotification($token);
     }
 
@@ -175,12 +182,13 @@ class User extends Authenticatable implements CanResetPassword
 
     public function onTeam($team)
     {
-        if (!$team) {
+        if (! $team) {
             return false;
         }
-        if (!is_numeric($team)) {
+        if (! is_numeric($team)) {
             $team = $team->id;
         }
+
         return $this->teams()->pluck('team_id')->contains($team);
     }
 

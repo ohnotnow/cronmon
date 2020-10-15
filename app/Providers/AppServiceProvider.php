@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Dusk\DuskServiceProvider;
-use Illuminate\Support\Facades\Schema;
 use Validator;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Validator::extend('emails', function ($attribute, $value, $parameters, $validator) {
-            $value = preg_replace("/\s+/", "", $value);
+            $value = preg_replace("/\s+/", '', $value);
             $mails = explode(',', $value);
             $rules = ['email' => 'email'];
             foreach ($mails as $mail) {
@@ -27,11 +27,12 @@ class AppServiceProvider extends ServiceProvider
                     return false;
                 }
             }
+
             return true;
         });
         // fix for laravel 5.4 using multibyte strings which breaks on older mysql/mariadb
         Schema::defaultStringLength(191);
-        if(env('FORCE_HTTPS',false)) { // Default value should be false for local server
+        if (env('FORCE_HTTPS', false)) { // Default value should be false for local server
             URL::forceSchema('https');
         }
     }

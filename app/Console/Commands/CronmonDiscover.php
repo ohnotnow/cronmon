@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use Cron\CronExpression;
-use Illuminate\Support\Str;
+use GuzzleHttp\Client;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class CronmonDiscover extends Command
 {
@@ -51,15 +51,16 @@ class CronmonDiscover extends Command
         app()->make(\Illuminate\Contracts\Console\Kernel::class);
         $schedule = app()->make(\Illuminate\Console\Scheduling\Schedule::class);
 
-        $responses = collect($schedule->events())->map(function($event) {
+        $responses = collect($schedule->events())->map(function ($event) {
             $cron = CronExpression::factory($event->expression);
             $date = Carbon::now();
             if ($event->timezone) {
                 $date->setTimezone($event->timezone);
             }
-            return (object)[
+
+            return (object) [
                 'expression' => $event->expression,
-                'name' => config('app.name') . ' ' . Str::after($event->command, '\'artisan\' '),
+                'name' => config('app.name').' '.Str::after($event->command, '\'artisan\' '),
             ];
         })->map(function ($event) {
             try {
@@ -69,15 +70,17 @@ class CronmonDiscover extends Command
                         \GuzzleHttp\RequestOptions::JSON => [
                             'schedule' => $event->expression,
                             'name' => $event->name,
-                            'api_key' => $this->argument('api_key')
-                        ]
+                            'api_key' => $this->argument('api_key'),
+                        ],
                     ]
                 );
             } catch (\GuzzleHttp\Exception\BadResponseException $e) {
                 $response = $e->getResponse();
-                return '"' . $event->name . '" Failed : ' . $response->getReasonPhrase();
+
+                return '"'.$event->name.'" Failed : '.$response->getReasonPhrase();
             }
-            return '"' . $event->name . '" Success';
+
+            return '"'.$event->name.'" Success';
         });
 
         $responses->each(function ($response) {

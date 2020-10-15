@@ -1,12 +1,13 @@
 <?php
+
 // @codingStandardsIgnoreFile
 
 namespace Tests\Browser;
 
-use Tests\DuskTestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use App\User;
 use App\Team;
+use App\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class TeamTest extends DuskTestCase
 {
@@ -49,6 +50,7 @@ class TeamTest extends DuskTestCase
                 ->assertSee('NEWNAME');
         });
     }
+
     /*
         public function test_a_user_can_associate_a_job_with_a_team()
         {
@@ -65,7 +67,7 @@ class TeamTest extends DuskTestCase
                 ->visit(route('job.show', $job->id))
                 ->assertSee($team->name);
         }
-    
+
         public function test_a_user_can_edit_a_job_which_is_allocated_to_one_of_their_teams()
         {
             $user1 = User::factory()->create();
@@ -82,7 +84,7 @@ class TeamTest extends DuskTestCase
                 ->assertSee('Your jobs')
                 ->assertSee('QPQPQPQP');
         }
-    
+
         public function test_a_user_can_add_and_remove_members_to_a_team()
         {
             $user1 = User::factory()->create();
@@ -90,7 +92,7 @@ class TeamTest extends DuskTestCase
             $user3 = User::factory()->create();
             $team = Team::factory()->create();
             $team->members()->attach([$user1->id, $user2->id]);
-    
+
             $this->actingAs($user1)
                 ->visit(route('team.show', $team->id))
                 ->assertSee($user1->username)
@@ -103,7 +105,7 @@ class TeamTest extends DuskTestCase
                 ->assertSee($user3->username)
                 ->dontassertSee($user2->username);
         }
-    
+
         public function test_a_user_cant_alter_a_team_they_are_not_on()
         {
             $user1 = User::factory()->create();
@@ -111,7 +113,7 @@ class TeamTest extends DuskTestCase
             $user3 = User::factory()->create();
             $team = Team::factory()->create();
             $team->members()->attach([$user1->id, $user2->id]);
-    
+
             $this->actingAs($user3)
                 ->get(route('team.show', $team->id))
                 ->assertSeeStatusCode(403);
@@ -122,26 +124,26 @@ class TeamTest extends DuskTestCase
                 ->get(route('teammember.edit', $team->id))
                 ->assertSeeStatusCode(403);
         }
-    
+
         public function test_a_user_cant_be_added_to_a_team_twice()
         {
             $user1 = User::factory()->create();
             $team = Team::factory()->create();
-    
+
             $team->addMember($user1->id);
             $this->assertEquals(1, $team->members->count());
-    
+
             $team->addMember($user1->id);
             $team->load('members');     // force laravel to reload the members relation fresh
             $this->assertEquals(1, $team->members->count());
         }
-    
+
         public function test_an_admin_can_view_all_teams()
         {
             $admin = User::factory()->create(['is_admin' => true]);
             $team1 = Team::factory()->create();
             $team2 = Team::factory()->create();
-    
+
             $this->actingAs($admin)
                 ->visit(route('job.index'))
                 ->click('Teams')

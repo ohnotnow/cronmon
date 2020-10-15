@@ -50,6 +50,7 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         $field = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
         return $request->only($field, 'password');
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
 use Cron\CronExpression;
+use Illuminate\Contracts\Validation\Rule;
 
 class ValidCronExpression implements Rule
 {
@@ -28,6 +28,7 @@ class ValidCronExpression implements Rule
     {
         try {
             $cron = CronExpression::factory($value);
+
             return true;
         } catch (\InvalidArgumentException $e) {
             return false;

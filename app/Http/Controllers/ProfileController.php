@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
@@ -30,6 +30,7 @@ class ProfileController extends Controller
             session()->flash('success', $key);
         }
         $request->user()->save();
+
         return redirect()->route('profile.show');
     }
 }

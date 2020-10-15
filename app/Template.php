@@ -3,9 +3,9 @@
 namespace App;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Template extends Model
 {
@@ -17,7 +17,7 @@ class Template extends Model
         'minute' => 'Minutes',
         'hour' => 'Hours',
         'day' => 'Days',
-        'week' => 'Weeks'
+        'week' => 'Weeks',
     ];
 
     public function user()
@@ -36,7 +36,7 @@ class Template extends Model
             throw new \Exception('Trying to generate a slug with no user_id set');
         }
         $this->update([
-            'slug' => Str::slug($this->user_id . '-' . $this->name),
+            'slug' => Str::slug($this->user_id.'-'.$this->name),
         ]);
     }
 
@@ -49,13 +49,14 @@ class Template extends Model
         }
         $job = new static($data);
         $job->uuid = CronUuid::generate();
+
         return $job;
     }
 
     public function createNewJob()
     {
         return Cronjob::create([
-            'name' => $this->name . ' Job ' . now()->format('d/m/Y H:i'),
+            'name' => $this->name.' Job '.now()->format('d/m/Y H:i'),
             'uuid' => CronUuid::generate(),
             'user_id' => $this->user_id,
             'grace' => $this->grace,
@@ -73,7 +74,8 @@ class Template extends Model
         if ($this->cron_schedule) {
             return $this->cron_schedule;
         }
-        return 'Every ' . $this->periodIfNotOne() . ' ' . $this->humanPeriodUnits();
+
+        return 'Every '.$this->periodIfNotOne().' '.$this->humanPeriodUnits();
     }
 
     public function periodIfNotOne()
@@ -86,6 +88,7 @@ class Template extends Model
         if ($this->period == 1) {
             return ucfirst($this->period_units);
         }
+
         return ucfirst(Str::plural($this->period_units));
     }
 
@@ -94,6 +97,7 @@ class Template extends Model
         if ($this->grace == 1) {
             return ucfirst($this->grace_units);
         }
+
         return ucfirst(Str::plural($this->grace_units));
     }
 
@@ -102,6 +106,7 @@ class Template extends Model
         if ($this->team) {
             return $this->team->name;
         }
+
         return 'None';
     }
 
@@ -110,6 +115,7 @@ class Template extends Model
         if ($this->email) {
             return $this->email;
         }
+
         return $this->user->email;
     }
 

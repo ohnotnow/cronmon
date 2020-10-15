@@ -2,19 +2,19 @@
 
 namespace App;
 
-use Illuminate\Support\Str;
 use App\CronUuid;
 use Carbon\Carbon;
 use Cron\CronExpression;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Cronjob extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name', 'period', 'period_units', 'grace', 'grace_units', 'email', 'is_silenced', 'user_id', 'uuid', 'team_id', 'notes', 'is_logging', 'fallback_email', 'cron_schedule', 'last_run'
+        'name', 'period', 'period_units', 'grace', 'grace_units', 'email', 'is_silenced', 'user_id', 'uuid', 'team_id', 'notes', 'is_logging', 'fallback_email', 'cron_schedule', 'last_run',
     ];
     protected $dates = ['last_run', 'last_alerted'];
 
@@ -22,7 +22,7 @@ class Cronjob extends Model
         'minute' => 'Minutes',
         'hour' => 'Hours',
         'day' => 'Days',
-        'week' => 'Weeks'
+        'week' => 'Weeks',
     ];
 
     public function user()
@@ -47,6 +47,7 @@ class Cronjob extends Model
         $job->period_units = 'day';
         $job->grace = 30;
         $job->grace_units = 'minute';
+
         return $job;
     }
 
@@ -59,6 +60,7 @@ class Cronjob extends Model
         $job->uuid = CronUuid::generate();
         $job->last_run = Carbon::now();
         $job->last_alerted = Carbon::now();
+
         return $job;
     }
 
@@ -72,6 +74,7 @@ class Cronjob extends Model
         if ($this->cron_schedule) {
             return $this->isAwolViaCron();
         }
+
         return $this->isAwolViaManual();
     }
 
@@ -84,6 +87,7 @@ class Cronjob extends Model
         if (now()->diffInMinutes($this->last_run) > ($periodInMinutes + $graceMinutes)) {
             return true;
         }
+
         return false;
     }
 
@@ -94,6 +98,7 @@ class Cronjob extends Model
         if ($now->diffInMinutes($this->last_run) > $graceTime) {
             return true;
         }
+
         return false;
     }
 
@@ -102,6 +107,7 @@ class Cronjob extends Model
         if ($this->is_silenced) {
             return false;
         }
+
         return $this->isAwol();
     }
 
@@ -142,6 +148,7 @@ class Cronjob extends Model
         if ($this->email) {
             return $this->email;
         }
+
         return $this->user->email;
     }
 
@@ -160,7 +167,8 @@ class Cronjob extends Model
         if ($this->cron_schedule) {
             return $this->cron_schedule;
         }
-        return 'Every ' . $this->periodIfNotOne() . ' ' . $this->humanPeriodUnits();
+
+        return 'Every '.$this->periodIfNotOne().' '.$this->humanPeriodUnits();
     }
 
     public function periodIfNotOne()
@@ -187,6 +195,7 @@ class Cronjob extends Model
         if ($this->period == 1) {
             return ucfirst($this->period_units);
         }
+
         return ucfirst(Str::plural($this->period_units));
     }
 
@@ -195,6 +204,7 @@ class Cronjob extends Model
         if ($this->grace == 1) {
             return ucfirst($this->grace_units);
         }
+
         return ucfirst(Str::plural($this->grace_units));
     }
 
@@ -204,12 +214,13 @@ class Cronjob extends Model
         if ($this->minutesSinceLastAlert() < $minutesToWait) {
             return true;
         }
+
         return false;
     }
 
     public function hasntAlertedRecently()
     {
-        return !$this->hasAlertedRecently();
+        return ! $this->hasAlertedRecently();
     }
 
     public function minutesSinceLastAlert()
@@ -225,13 +236,14 @@ class Cronjob extends Model
 
     public function shouldNotifyFallbackAddress()
     {
-        if (!$this->fallback_email) {
+        if (! $this->fallback_email) {
             return false;
         }
         $triggerDate = $this->last_run->addHours(config('cronmon.fallback_delay', 24));
         if ($triggerDate->gte(now())) {
             return false;
         }
+
         return true;
     }
 
@@ -245,6 +257,7 @@ class Cronjob extends Model
         if ($this->team) {
             return $this->team->name;
         }
+
         return 'None';
     }
 
@@ -258,6 +271,7 @@ class Cronjob extends Model
             $this->uuid = CronUuid::generate();
         }
         $this->save();
+
         return $this;
     }
 

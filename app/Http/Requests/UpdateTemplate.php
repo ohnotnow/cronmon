@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use App\Rules\ValidCronExpression;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTemplate extends FormRequest
 {
@@ -26,6 +26,7 @@ class UpdateTemplate extends FormRequest
     public function rules()
     {
         $request = $this;
+
         return [
             'name' => [
                 'required',

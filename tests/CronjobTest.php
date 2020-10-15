@@ -1,19 +1,20 @@
 <?php
+
 // @codingStandardsIgnoreFile
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use App\Cronjob;
+use App\Notifications\JobHasGoneAwol;
+use App\Ping;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Notifications\AnonymousNotifiable;
-use App\Notifications\JobHasGoneAwol;
-use App\Cronjob;
-use App\User;
-use App\Ping;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
 
 class CronjobTest extends TestCase
 {
@@ -209,6 +210,7 @@ class CronjobTest extends TestCase
             }
         );
     }
+
     public function test_pinging_a_job_creates_a_new_ping_record_when_the_job_is_logging_runs()
     {
         $user = User::factory()->create();
@@ -243,7 +245,7 @@ class CronjobTest extends TestCase
     {
         $job = Cronjob::makeNew([
             'name' => 'QPQPQPQ',
-            'team_id' => "-1",
+            'team_id' => '-1',
             'period' => 1,
             'period_units' => 'hour',
             'grace' => 5,

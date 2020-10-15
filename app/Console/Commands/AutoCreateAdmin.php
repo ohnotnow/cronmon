@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\User;
+use Illuminate\Console\Command;
 use Validator;
 
 class AutoCreateAdmin extends Command
@@ -54,16 +54,17 @@ class AutoCreateAdmin extends Command
 
         $email = trim(strtolower($email));
         $admin = User::where('email', '=', $email)->first();
-        if (!$admin) {
+        if (! $admin) {
             $admin = User::createNewAdmin($username, $email, $password);
-            $this->info("Auto-created new admin");
+            $this->info('Auto-created new admin');
+
             return;
         }
 
         $validator = Validator::make(['email' => $email, 'password' => $password, 'username' => $username], [
-            'email' => 'required|email|max:255|unique:users,email,' . $admin->id . ',id',
+            'email' => 'required|email|max:255|unique:users,email,'.$admin->id.',id',
             'password' => 'required|min:8',
-            'username' => 'required|unique:users,email,' . $admin->id . ',id',
+            'username' => 'required|unique:users,email,'.$admin->id.',id',
         ]);
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
@@ -79,7 +80,7 @@ class AutoCreateAdmin extends Command
             'password' => bcrypt($password),
         ]);
 
-        $this->info("Auto-updated admin user");
+        $this->info('Auto-updated admin user');
     }
 
     public function findValueFor(string $key)
@@ -90,6 +91,7 @@ class AutoCreateAdmin extends Command
         if (! config("cronmon.admin_{$key}_file")) {
             return null;
         }
+
         return file_get_contents(config("cronmon.admin_{$key}_file"));
     }
 }

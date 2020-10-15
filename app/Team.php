@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
@@ -31,6 +31,7 @@ class Team extends Model
         if ($this->isAlreadyAMember($userId)) {
             return false;
         }
+
         return $this->members()->attach($userId);
     }
 

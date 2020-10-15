@@ -2,11 +2,11 @@
 
 namespace App\Notifications;
 
+use App\Cronjob;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Cronjob;
+use Illuminate\Notifications\Notification;
 
 class JobHasGoneAwol extends Notification
 {
@@ -44,12 +44,12 @@ class JobHasGoneAwol extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(config('cronmon.email_prefix') . ' Job has not run')
-            ->line('Cron job "' . $this->job->name . '" has not run')
+            ->subject(config('cronmon.email_prefix').' Job has not run')
+            ->line('Cron job "'.$this->job->name.'" has not run')
             ->action('Check the status', route('job.show', $this->job->id))
-            ->line('Job : ' . $this->job->name)
-            ->line('Last Run : ' . $this->job->getLastRun() . ' (' . $this->job->getLastRunDiff() . ')')
-            ->line('Schedule : ' . $this->job->getSchedule());
+            ->line('Job : '.$this->job->name)
+            ->line('Last Run : '.$this->job->getLastRun().' ('.$this->job->getLastRunDiff().')')
+            ->line('Schedule : '.$this->job->getSchedule());
     }
 
     /**

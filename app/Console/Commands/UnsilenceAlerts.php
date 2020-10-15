@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Storage;
 use Illuminate\Console\Command;
+use Storage;
 
 class UnsilenceAlerts extends Command
 {

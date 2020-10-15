@@ -1,12 +1,13 @@
 <?php
+
 // @codingStandardsIgnoreFile
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use App\CronUuid;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\CronUuid;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class UuidTest extends TestCase
 {

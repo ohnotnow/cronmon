@@ -2,12 +2,12 @@
 
 namespace Tests;
 
-use App\User;
 use App\Cronjob;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\DB;
 
 class ApiTest extends BrowserKitTest
 {
@@ -16,7 +16,7 @@ class ApiTest extends BrowserKitTest
         $user = User::factory()->create();
         $job = $this->createRunningJob($user);
 
-        $this->get('/ping/' . $job->uuid)->assertResponseOk();
+        $this->get('/ping/'.$job->uuid)->assertResponseOk();
 
         $jobCopy = $user->jobs()->first();
         $this->assertTrue($jobCopy->last_run->gt($job->last_run));
@@ -28,7 +28,7 @@ class ApiTest extends BrowserKitTest
         $job = $this->createAwolJob($user);
         $this->assertTrue($job->isAwol());
 
-        $this->get('/ping/' . $job->uuid)->assertResponseOk();
+        $this->get('/ping/'.$job->uuid)->assertResponseOk();
 
         $job = $job->fresh();
         $this->assertFalse($job->isAwol());

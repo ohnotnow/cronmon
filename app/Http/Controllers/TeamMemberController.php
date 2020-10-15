@@ -13,6 +13,7 @@ class TeamMemberController extends Controller
         $team = Team::findOrFail($id);
         $this->authorize('edit-team', $team);
         $users = User::orderBy('username')->get();
+
         return view('team.member.edit', compact('team', 'users'));
     }
 
@@ -26,6 +27,7 @@ class TeamMemberController extends Controller
         if ($request->filled('add')) {
             $team->addMember($request->add);
         }
+
         return redirect()->route('team.show', $team->id);
     }
 }

@@ -35,6 +35,7 @@ abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
         $job->last_run = Carbon::now()->subHours(2);
         $job->last_alerted = Carbon::now()->subHours(2);
         $job->save();
+
         return $job;
     }
 
@@ -44,6 +45,7 @@ abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
         $job = $user->addNewJob($data);
         $job->last_run = Carbon::now()->subMinutes(2);
         $job->save();
+
         return $job;
     }
 }
