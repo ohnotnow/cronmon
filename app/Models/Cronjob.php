@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\CronUuid;
+use App\Models\CronUuid;
 use Carbon\Carbon;
 use Cron\CronExpression;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

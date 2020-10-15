@@ -4,7 +4,7 @@
 
 namespace Tests;
 
-use App\CronUuid;
+use App\Models\CronUuid;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;

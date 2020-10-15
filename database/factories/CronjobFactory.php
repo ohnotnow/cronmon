@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Cronjob;
-use App\CronUuid;
+use App\Models\CronUuid;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CronjobFactory extends Factory
