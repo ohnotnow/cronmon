@@ -17,7 +17,7 @@ class ReformatRoutes extends Command
 
     public function handle()
     {
-        $fileName = base_path() . "/routes/" . $this->option('file') . ".php";
+        $fileName = base_path().'/routes/'.$this->option('file').'.php';
         $contents = file_get_contents($fileName);
 
         $newContents = collect(explode(PHP_EOL, $contents))->map(function ($line) {
@@ -28,7 +28,7 @@ class ReformatRoutes extends Command
             $controllerSection = [];
             if (preg_match('/, (\"|\')([A-Za-z0-9\\\\]+@[a-zA-Z]+)(\"|\')/', $line, $controllerSection) === 0) {
                 return $line;
-            };
+            }
 
             [$controllerName, $methodName] = explode('@', $controllerSection[2]);
 
@@ -38,7 +38,7 @@ class ReformatRoutes extends Command
             }
             $newLine = str_replace(
                 $controllerSection[0],
-                ", [{$classPrefix}" . $controllerName . "::class, " . "'{$methodName}']",
+                ", [{$classPrefix}".$controllerName.'::class, '."'{$methodName}']",
                 $line
             );
 
@@ -47,6 +47,7 @@ class ReformatRoutes extends Command
 
         if ($this->option('dry-run')) {
             $this->info($newContents->implode(PHP_EOL));
+
             return;
         }
 

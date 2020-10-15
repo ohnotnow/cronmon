@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use Illuminate\Console\Command;
-use App\User;
 use Validator;
 
 class CreateAdmin extends Command

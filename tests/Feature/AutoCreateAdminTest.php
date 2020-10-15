@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use Tests\TestCase;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
+use Tests\TestCase;
 
 class AutoCreateAdminTest extends TestCase
 {
@@ -16,7 +16,6 @@ class AutoCreateAdminTest extends TestCase
     /** @test */
     public function we_can_automatically_create_an_admin_user_automatically()
     {
-
         config(['cronmon.admin_username' => 'jenny']);
         config(['cronmon.admin_email' => 'jenny@example.com']);
         config(['cronmon.admin_password' => 'secret']);

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Template;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Template;
+use Illuminate\Http\Request;
 
 class TemplateController extends Controller
 {

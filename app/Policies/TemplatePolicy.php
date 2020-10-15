@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Template;
-use App\User;
+use App\Models\Template;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TemplatePolicy
@@ -13,7 +13,7 @@ class TemplatePolicy
     /**
      * Determine whether the user can view any templates.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -24,8 +24,8 @@ class TemplatePolicy
     /**
      * Determine whether the user can view the template.
      *
-     * @param  \App\User  $user
-     * @param  \App\Template  $template
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Template  $template
      * @return mixed
      */
     public function view(User $user, Template $template)
@@ -36,7 +36,7 @@ class TemplatePolicy
     /**
      * Determine whether the user can create templates.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function create(User $user)
@@ -47,8 +47,8 @@ class TemplatePolicy
     /**
      * Determine whether the user can update the template.
      *
-     * @param  \App\User  $user
-     * @param  \App\Template  $template
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Template  $template
      * @return mixed
      */
     public function update(User $user, Template $template)
@@ -59,8 +59,8 @@ class TemplatePolicy
     /**
      * Determine whether the user can delete the template.
      *
-     * @param  \App\User  $user
-     * @param  \App\Template  $template
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Template  $template
      * @return mixed
      */
     public function delete(User $user, Template $template)
@@ -71,8 +71,8 @@ class TemplatePolicy
     /**
      * Determine whether the user can restore the template.
      *
-     * @param  \App\User  $user
-     * @param  \App\Template  $template
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Template  $template
      * @return mixed
      */
     public function restore(User $user, Template $template)
@@ -83,8 +83,8 @@ class TemplatePolicy
     /**
      * Determine whether the user can permanently delete the template.
      *
-     * @param  \App\User  $user
-     * @param  \App\Template  $template
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Template  $template
      * @return mixed
      */
     public function forceDelete(User $user, Template $template)

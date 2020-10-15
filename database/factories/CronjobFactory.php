@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Cronjob;
+use App\Models\Cronjob;
+use App\Models\CronUuid;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\CronUuid;
 
 class CronjobFactory extends Factory
 {
@@ -29,7 +29,7 @@ class CronjobFactory extends Factory
             'grace_units' => 'minute',
             'period' => 1,
             'period_units' => 'hour',
-            'user_id' => \App\User::factory(),
+            'user_id' => \App\Models\User::factory(),
             'email' => 'test@test.com',
             'last_run' => null,
             'is_silenced' => false,

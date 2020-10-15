@@ -1,14 +1,15 @@
 <?php
+
 // @codingStandardsIgnoreFile
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use App\Models\Cronjob;
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Team;
-use App\Cronjob;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class TeamTest extends TestCase
 {

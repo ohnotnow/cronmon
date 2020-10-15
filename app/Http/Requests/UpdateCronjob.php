@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Cronjob;
-use Illuminate\Validation\Rule;
+use App\Models\Cronjob;
 use App\Rules\ValidCronExpression;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCronjob extends FormRequest
 {
@@ -26,6 +26,7 @@ class UpdateCronjob extends FormRequest
         if ($this->user()->onTeam($job->team_id)) {
             return true;
         }
+
         return false;
     }
 
@@ -37,13 +38,14 @@ class UpdateCronjob extends FormRequest
     public function rules()
     {
         $request = $this;
+
         return [
             'name' => [
                 'required',
                 'max:255',
                 Rule::unique('cronjobs')->ignore($this->id)->where(function ($query) use ($request) {
                     $query->where('user_id', $request->user()->id);
-                })
+                }),
             ],
             'period' => 'required|min:1',
             'period_units' => 'required|in:minute,day,hour,week',

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use Illuminate\Console\Command;
-use App\User;
 
 class CheckJobs extends Command
 {

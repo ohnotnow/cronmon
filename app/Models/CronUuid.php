@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Uuid;
 
 class CronUuid
 {

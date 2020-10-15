@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Cronjob;
-use Illuminate\Http\Request;
+use App\Models\Cronjob;
 use App\Http\Requests\StoreCronjob;
 use App\Http\Requests\UpdateCronjob;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class CronjobController extends Controller
 {
@@ -14,24 +14,28 @@ class CronjobController extends Controller
     {
         $job = Cronjob::findOrFail($id);
         $this->authorize('edit-job', $job);
+
         return view('job.show', compact('job'));
     }
 
     public function index()
     {
         $jobs = Cronjob::orderBy('name')->with('user', 'team')->get();
+
         return view('job.admin.index', compact('jobs'));
     }
 
     public function create()
     {
         $job = Cronjob::newDefault();
+
         return view('job.create', compact('job'));
     }
 
     public function store(StoreCronjob $request)
     {
         $request->user()->addNewJob($request->all());
+
         return redirect()->route('home');
     }
 
@@ -40,6 +44,7 @@ class CronjobController extends Controller
         $job = Cronjob::findOrFail($id);
         $this->authorize('edit-job', $job);
         $users = User::orderBy('username')->get();
+
         return view('job.edit', compact('job', 'users'));
     }
 
@@ -48,6 +53,7 @@ class CronjobController extends Controller
         $job = Cronjob::findOrFail($id);
         $this->authorize('edit-job', $job);
         $job->updateFromForm($request->all());
+
         return redirect()->route('home');
     }
 
@@ -57,6 +63,7 @@ class CronjobController extends Controller
         $this->authorize('edit-job', $job);
         $job->pings()->delete();
         $job->delete();
+
         return redirect()->route('home');
     }
 }

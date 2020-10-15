@@ -1,11 +1,12 @@
 <?php
+
 // @codingStandardsIgnoreFile
 
 namespace Tests\BrowserKit;
 
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use App\User;
-use App\Team;
 
 class BrowserKitTeamTest extends \Tests\BrowserKitTest
 {
@@ -36,7 +37,7 @@ class BrowserKitTeamTest extends \Tests\BrowserKitTest
         $job = $this->createRunningJob($user1, ['team_id' => $team->id]);
         $this->actingAs($user2)
             ->visit(route('job.edit', $job->id))
-            ->see('Edit job ' . $job->name)
+            ->see('Edit job '.$job->name)
             ->type('QPQPQPQP', 'name')
             ->press('Update')
             ->see('Your jobs')

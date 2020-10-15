@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Cronjob;
+use App\Models\Cronjob;
 use Illuminate\Console\Command;
 
 class TruncatePings extends Command

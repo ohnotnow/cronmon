@@ -2,27 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\User;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::orderBy('username')->get();
+
         return view('user.index', compact('users'));
     }
 
     public function show($id)
     {
         $user = User::findOrFail($id);
+
         return view('user.show', compact('user'));
     }
 
     public function create()
     {
         $user = new User;
+
         return view('user.create', compact('user'));
     }
 
@@ -34,12 +37,14 @@ class UserController extends Controller
             'is_admin' => 'boolean',
         ]);
         User::register($request->all());
+
         return redirect()->route('user.index');
     }
 
     public function edit($id)
     {
         $user = User::findOrFail($id);
+
         return view('user.edit', compact('user'));
     }
 
@@ -56,6 +61,7 @@ class UserController extends Controller
         if ($request->has('reset_password')) {
             $user->sendResetLink();
         }
+
         return redirect()->route('user.index');
     }
 
@@ -63,6 +69,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->removeFromSystem();
+
         return redirect()->route('user.index');
     }
 }

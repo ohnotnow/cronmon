@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Template;
+use App\Models\Template;
 use Livewire\Component;
 
 class TemplateList extends Component
@@ -27,6 +27,7 @@ class TemplateList extends Component
             $teamIds = auth()->user()->teams()->get()->pluck('id')->values()->toArray();
             $query = $query->whereIn('team_id', $teamIds);
         }
+
         return $query->orderBy('name')->get();
     }
 }

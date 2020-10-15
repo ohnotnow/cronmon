@@ -1,16 +1,17 @@
 <?php
+
 // @codingStandardsIgnoreFile
 
 namespace Tests\BrowserKit;
 
-use App\User;
-use App\Cronjob;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use App\Models\Cronjob;
+use App\Models\Team;
+use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Notification;
-use App\Team;
 
 class UiTest extends \Tests\BrowserKitTest
 {
@@ -59,7 +60,7 @@ class UiTest extends \Tests\BrowserKitTest
             ->see($job->name)
             ->click($job->name)
             ->click('Edit job')
-            ->see('Edit job ' . $job->name)
+            ->see('Edit job '.$job->name)
             ->type('ALLOFYOURCRONSAREBELONGTOUS', 'name')
             ->type($job->period + 5, 'period')
             ->check('is_silenced')
@@ -67,7 +68,7 @@ class UiTest extends \Tests\BrowserKitTest
             ->see('Your jobs')
             ->dontSee($job->name)
             ->see('ALLOFYOURCRONSAREBELONGTOUS')
-            ->see('Every ' . ($job->period + 5));
+            ->see('Every '.($job->period + 5));
     }
 
     public function test_an_admin_can_add_a_new_user()

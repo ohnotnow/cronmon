@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use App\Cronjob;
-use App\Team;
-use Tests\TestCase;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Cronjob;
+use App\Models\Team;
+use App\Models\User;
 use BlastCloud\Guzzler\UsesGuzzler;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
+use Tests\TestCase;
 
 class CronjobApiCrudTest extends TestCase
 {
@@ -172,8 +172,8 @@ class CronjobApiCrudTest extends TestCase
     {
         $client = $this->guzzler->getClient();
         $this->app->instance(\GuzzleHttp\Client::class, $client);
-        $this->guzzler->queueResponse(new \GuzzleHttp\Psr7\Response(200, [], "{job: {}}"));
-        $this->guzzler->queueResponse(new \GuzzleHttp\Psr7\Response(200, [], "{job: {}}"));
+        $this->guzzler->queueResponse(new \GuzzleHttp\Psr7\Response(200, [], '{job: {}}'));
+        $this->guzzler->queueResponse(new \GuzzleHttp\Psr7\Response(200, [], '{job: {}}'));
         $user = User::factory()->create(['api_key' => 'hello']);
 
         $this->artisan('cronmon:discover http://example.com/ hello')

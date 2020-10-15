@@ -3,9 +3,9 @@
 namespace Tests;
 
 use Carbon\Carbon;
-use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 
 abstract class BrowserKitTest extends BaseTestCase
 {
@@ -37,6 +37,7 @@ abstract class BrowserKitTest extends BaseTestCase
         $job->last_run = Carbon::now()->subHours(2);
         $job->last_alerted = Carbon::now()->subHours(2);
         $job->save();
+
         return $job;
     }
 
@@ -46,6 +47,7 @@ abstract class BrowserKitTest extends BaseTestCase
         $job = $user->addNewJob($data);
         $job->last_run = Carbon::now()->subMinutes(2);
         $job->save();
+
         return $job;
     }
 }

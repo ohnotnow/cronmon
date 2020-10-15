@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Team;
 use Illuminate\Http\Request;
-use App\Team;
 
 class TeamController extends Controller
 {
     public function index()
     {
         $teams = Team::orderBy('name')->with('members', 'jobs')->get();
+
         return view('team.index', compact('teams'));
     }
 
     public function create()
     {
         $team = new Team;
+
         return view('team.create', compact('team'));
     }
 
@@ -23,18 +25,21 @@ class TeamController extends Controller
     {
         $team = new Team($request->only('name'));
         $request->user()->teams()->save($team);
+
         return redirect()->route('team.show', $team->id);
     }
 
     public function show(Team $team)
     {
         $this->authorize('edit-team', $team);
+
         return view('team.show', compact('team'));
     }
 
     public function edit(Team $team)
     {
         $this->authorize('edit-team', $team);
+
         return view('team.edit', compact('team'));
     }
 
@@ -43,6 +48,7 @@ class TeamController extends Controller
         $this->authorize('edit-team', $team);
         $team->fill($request->only('name'));
         $team->save();
+
         return redirect()->route('team.show', $team->id);
     }
 
