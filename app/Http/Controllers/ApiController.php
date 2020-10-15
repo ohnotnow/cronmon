@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Cronjob;
+use App\Models\Cronjob;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller

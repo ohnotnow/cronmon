@@ -4,9 +4,9 @@
 
 namespace Tests\BrowserKit;
 
-use App\Cronjob;
-use App\Team;
-use App\User;
+use App\Models\Cronjob;
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

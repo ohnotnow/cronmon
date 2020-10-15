@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Cronjob;
+use App\Models\Cronjob;
 use App\Rules\ValidCronExpression;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

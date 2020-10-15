@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Ping;
+use App\Models\Ping;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PingFactory extends Factory
@@ -22,7 +22,7 @@ class PingFactory extends Factory
     public function definition()
     {
         return [
-            'cronjob_id' => \App\Cronjob::factory(),
+            'cronjob_id' => \App\Models\Cronjob::factory(),
         ];
     }
 }

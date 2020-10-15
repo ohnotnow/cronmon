@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use App\Cronjob;
-use App\User;
+use App\Models\Cronjob;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;

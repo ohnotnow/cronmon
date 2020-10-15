@@ -4,10 +4,10 @@
 
 namespace Tests;
 
-use App\Cronjob;
+use App\Models\Cronjob;
 use App\Notifications\JobHasGoneAwol;
-use App\Ping;
-use App\User;
+use App\Models\Ping;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

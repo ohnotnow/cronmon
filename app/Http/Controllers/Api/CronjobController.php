@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Cronjob;
+use App\Models\Cronjob;
 use App\Http\Controllers\Controller;
 use App\Rules\ValidCronExpression;
-use App\Team;
-use App\User;
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CronjobController extends Controller

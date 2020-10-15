@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Team;
-use App\User;
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TeamMemberController extends Controller

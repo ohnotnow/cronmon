@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Cronjob;
+use App\Models\Cronjob;
 use App\Http\Requests\StoreCronjob;
 use App\Http\Requests\UpdateCronjob;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CronjobController extends Controller

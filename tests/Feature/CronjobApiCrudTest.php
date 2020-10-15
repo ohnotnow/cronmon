@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Cronjob;
-use App\Team;
-use App\User;
+use App\Models\Cronjob;
+use App\Models\Team;
+use App\Models\User;
 use BlastCloud\Guzzler\UsesGuzzler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

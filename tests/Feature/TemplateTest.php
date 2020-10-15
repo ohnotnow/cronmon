@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Cronjob;
-use App\Team;
-use App\Template;
-use App\User;
+use App\Models\Cronjob;
+use App\Models\Team;
+use App\Models\Template;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;

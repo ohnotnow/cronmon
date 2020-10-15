@@ -4,8 +4,8 @@
 
 namespace Tests\BrowserKit;
 
-use App\Team;
-use App\User;
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class BrowserKitTeamTest extends \Tests\BrowserKitTest

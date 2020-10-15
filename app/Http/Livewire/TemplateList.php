@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Template;
+use App\Models\Template;
 use Livewire\Component;
 
 class TemplateList extends Component
