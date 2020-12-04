@@ -41,9 +41,6 @@ services:
       <<: *default-env
     ports:
       - "${APP_PORT:-3000}:80"
-    build:
-      context: .
-      target: dev
     depends_on:
       - redis
       - mysql
