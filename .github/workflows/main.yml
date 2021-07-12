@@ -2,6 +2,11 @@ name: build-images
 
 on:
   push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
@@ -61,6 +66,16 @@ jobs:
           image: localhost:5000/ohffs/cronmon:latest
           run: rm -fv .env && cp -v .env.github .env && php artisan config:clear && CI=1 APP_ENV=testing ./vendor/bin/phpunit -c phpunit.github.xml
 
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Get latest release version number
+        id: get_version
+        uses: battila7/get-version-action@v2
+
       - name: Build and push tagged version
         if: startsWith(github.ref, 'refs/tags/')
         uses: docker/build-push-action@v2
@@ -75,13 +90,7 @@ jobs:
           build-args: |
             PHP_VERSION=7.4
           tags: |
-            ohffs/${{ github.event.repository.name }}:${{ github.ref }}
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+            ohffs/${{ github.event.repository.name }}:${{ steps.get_version.outputs.version }}
 
       - name: Build and push latest
         if: github.ref == 'refs/heads/master'
