@@ -35,7 +35,7 @@ x-env:
 
 services:
   app:
-    image: ohffs/cronmon:2.0.3
+    image: ohffs/cronmon:2.0.4
     environment:
       CONTAINER_ROLE: app
       <<: *default-env
@@ -47,7 +47,7 @@ services:
       - mailhog
 
   scheduler:
-    image: ohffs/cronmon:2.0.3
+    image: ohffs/cronmon:2.0.4
     environment:
       CONTAINER_ROLE: scheduler
       <<: *default-env
@@ -55,7 +55,7 @@ services:
       - app
 
   queue:
-    image: ohffs/cronmon:2.0.3
+    image: ohffs/cronmon:2.0.4
     environment:
       CONTAINER_ROLE: queue
       <<: *default-env
@@ -63,7 +63,7 @@ services:
       - app
 
   migrations:
-    image: ohffs/cronmon:2.0.3
+    image: ohffs/cronmon:2.0.4
     environment:
       CONTAINER_ROLE: migrations
       <<: *default-env
