@@ -52,8 +52,8 @@ jobs:
           target: ci
           build-args: |
             PHP_VERSION=7.4
-          tags: |
-            localhost:5000/ohffs/cronmon:latest
+          tags: localhost:5000/ohffs/cronmon:latest
+
       - name: Run tests
         uses: addnab/docker-run-action@v1
         with:
