@@ -19,7 +19,7 @@ jobs:
       registry:
         image: registry:2
         ports:
-          - 5005:5000
+          - 5000:5000
 
     steps:
       - name: Checkout
@@ -53,14 +53,14 @@ jobs:
           build-args: |
             PHP_VERSION=7.4
           tags: |
-            localhost:5005/${{ github.event.repository.name }}:${{ github.sha }}
+            localhost:5000/${{ github.event.repository.name }}:${{ github.sha }}
       - name: Run tests
         uses: addnab/docker-run-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           options: "--network host"
-          image: localhost:5005/${{ github.event.repository.name }}:${{ github.sha }}
+          image: localhost:5000/${{ github.event.repository.name }}:${{ github.sha }}
           run: rm -fv .env && cp -v .env.github .env && php artisan config:clear && CI=1 APP_ENV=testing ./vendor/bin/phpunit -c phpunit.github.xml
       - name: Build and push tagged version
         if: startsWith(github.ref, 'refs/tags/')
