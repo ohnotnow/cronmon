@@ -16,7 +16,7 @@
         "laravel/horizon": "^5.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
-        "livewire/livewire": "^2.0",
+        "livewire/livewire": "2.5.2",
         "ramsey/uuid": "^4.0"
     },
     "require-dev": {
