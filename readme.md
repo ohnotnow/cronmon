@@ -1,5 +1,7 @@
 # Cronmon
 
+**Note:** A newer version of this app is at https://github.com/UoGSoE/cronmon .  This version will be archived.
+
 [![Build Status](https://travis-ci.org/ohnotnow/cronmon.svg?branch=master)](https://travis-ci.org/ohnotnow/cronmon)
 
 A PHP web app to monitor & alert cron jobs using a simple http api.  It allows users to create job entries
